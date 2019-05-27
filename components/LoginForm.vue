@@ -7,7 +7,7 @@
           <v-text-field
             v-model="password"
             label="Password"
-            password
+            type="password"
             required
           ></v-text-field>
           <AsyncButton :action="login" color="primary" block>Login</AsyncButton>

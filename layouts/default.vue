@@ -23,7 +23,7 @@
       <v-toolbar-side-icon @click="isDrawerOpen = !isDrawerOpen" />
       <v-toolbar-title>Thesis manager</v-toolbar-title>
       <v-spacer />
-      <v-btn icon @click.stop="toggleDarkMode">
+      <v-btn icon @click="toggleDarkMode">
         <v-icon>fa-moon</v-icon>
       </v-btn>
     </v-toolbar>

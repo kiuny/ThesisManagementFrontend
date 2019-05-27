@@ -11,7 +11,7 @@ export const state = () => ({
       to: '/register'
     }
   ],
-  darkMode: true
+  darkMode: localStorage.darkMode && localStorage.darkMode === 'true'
 })
 
 export const mutations = {
@@ -20,5 +20,6 @@ export const mutations = {
   },
   toggleDarkMode(state) {
     state.darkMode = !state.darkMode
+    localStorage.darkMode = state.darkMode
   }
 }
