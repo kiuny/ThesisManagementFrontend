@@ -1,5 +1,7 @@
 <template>
   <v-app :dark="darkMode">
+    <notifications position="top center"></notifications>
+
     <v-navigation-drawer v-model="isDrawerOpen" clipped fixed app>
       <v-list>
         <v-list-tile
@@ -29,9 +31,7 @@
     </v-toolbar>
 
     <v-content>
-      <v-container>
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-content>
 
     <v-footer app>
