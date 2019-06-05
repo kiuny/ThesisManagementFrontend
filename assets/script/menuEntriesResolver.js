@@ -21,6 +21,13 @@ const menuEntries = {
       icon: 'fa-user-graduate',
       to: paths.students
     }
+  ],
+  'Manage thesis papers': [
+    {
+      title: 'Thesis papers',
+      icon: 'fa-archive',
+      to: paths.papers
+    }
   ]
 }
 
