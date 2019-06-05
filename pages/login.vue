@@ -16,6 +16,11 @@
             type="password"
             :error-messages="errors.password"
           ></v-text-field>
+          <v-checkbox
+            v-model="rememberMe"
+            label="Remember me"
+            color="primary"
+          ></v-checkbox>
           <AsyncButton :action="loginPressed" color="primary" block
             >Login
           </AsyncButton>
@@ -36,7 +41,8 @@ export default {
   data() {
     return {
       email: 'admin@admin.com',
-      password: 'admin'
+      password: 'admin',
+      rememberMe: true
     }
   },
   methods: {
@@ -46,7 +52,8 @@ export default {
     loginPressed() {
       return this.login({
         email: this.email,
-        password: this.password
+        password: this.password,
+        remember_me: this.remember_me
       })
         .then(this.clearErrors)
         .catch(this.errorHandling)

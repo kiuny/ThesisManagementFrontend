@@ -27,7 +27,7 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: '#fff' },
+  loading: { color: '#559bff' },
 
   /*
    ** Global CSS
@@ -41,7 +41,8 @@ export default {
     '@/plugins/vuetify',
     '@/plugins/axios',
     '@/plugins/initializeAuth',
-    '@/plugins/notifications'
+    '@/plugins/notifications',
+    '@/plugins/AsyncComputed'
   ],
 
   /*

@@ -8,10 +8,7 @@ const addAuthToken = config => {
 }
 
 const extractAuthToken = headers => {
-  const authToken = headers.authorization
-  if (authToken) {
-    localStorage.token = authToken
-  }
+  localStorage.token = headers.authorization
 }
 
 export default function({ $axios }) {

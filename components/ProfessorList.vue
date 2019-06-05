@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <v-card class="px-3 py-2">
     <v-text-field
       ref="email"
       v-model="email"
       color="primary"
-      label="New prof. email"
+      label="Add new professor by email"
       :error-messages="errors.email"
       single-line
       append-outer-icon="add"
@@ -21,41 +21,39 @@
       clearable
     >
     </v-text-field>
-    <v-flex row class="text-xs-center">
-      <v-progress-circular
-        v-if="loadingProfessors"
-        indeterminate
-      ></v-progress-circular>
+    <v-flex v-if="loadingProfessors" row class="text-xs-center">
+      <v-progress-circular indeterminate></v-progress-circular>
     </v-flex>
 
     <v-list v-if="!loadingProfessors">
-      <v-list-tile
-        v-for="professor in filteredProfessors"
-        :key="professor.id"
-        :color="isSelected(professor) ? 'primary' : ''"
-          @click="$emit('input', professor)"
-      >
-        <v-list-tile-content v-text="professor.name"></v-list-tile-content>
-        <v-list-tile-action>
-          <v-icon>fa-chevron-right</v-icon>
-        </v-list-tile-action>
+      <template v-for="professor in filteredProfessors">
+        <v-divider :key="`divider-${professor.id}`"></v-divider>
+
+        <v-list-tile
+          :key="`tile-${professor.id}`"
+          @click="goToProfessor(professor.id)"
+        >
+          <v-list-tile-content v-text="professor.name"></v-list-tile-content>
+          <v-list-tile-action>
+            <v-icon>fa-chevron-right</v-icon>
+          </v-list-tile-action>
+        </v-list-tile>
+      </template>
+
+      <v-list-tile v-if="filteredProfessors.length === 0">
+        <v-list-tile-content>No professors found</v-list-tile-content>
       </v-list-tile>
     </v-list>
-  </div>
+  </v-card>
 </template>
 
 <script>
 import endpoints from '../assets/script/endpoints'
+import paths from '../assets/script/paths'
 import errorHandlingMixin from './errorHandlingMixin'
 
 export default {
   mixins: [errorHandlingMixin],
-  props: {
-    value: {
-      required: true,
-      type: Object
-    }
-  },
   data() {
     return {
       professors: [],
@@ -75,6 +73,9 @@ export default {
     this.loadProfessors()
   },
   methods: {
+    goToProfessor(id) {
+      this.$router.push(paths.professor(id))
+    },
     loadProfessors() {
       this.loadingProfessors = true
       this.$axios
@@ -93,11 +94,9 @@ export default {
         .then(() => {
           this.email = ''
           this.loadProfessors()
+          this.clearErrors()
         })
         .catch(this.errorHandling)
-    },
-    isSelected(professor) {
-      return this.value && this.value.id === professor.id
     }
   }
 }

@@ -3,5 +3,10 @@ export default {
   logout: '/logout',
   register: '/register',
   professors: '/professors',
-  students: '/students'
+  dashboard: '/',
+
+  professor: id => `/professors/${id}`,
+  students: '/students',
+  examSessions: '/examSessions',
+  student: id => `/students/${id}`
 }

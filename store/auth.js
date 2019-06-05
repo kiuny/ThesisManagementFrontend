@@ -3,17 +3,17 @@ import endpoints from 'assets/script/endpoints'
 export const state = () => ({
   token: '',
   user: {},
-  permissions: new Set()
+  permissions: []
 })
 
 export const mutations = {
   storeUser(state, { user, permissions }) {
     state.user = user
-    state.permissions = new Set(permissions)
+    state.permissions = permissions
   },
   clearUser(state) {
     state.user = {}
-    state.permissions = new Set()
+    state.permissions = []
   }
 }
 

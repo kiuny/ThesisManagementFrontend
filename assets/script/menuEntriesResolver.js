@@ -1,6 +1,13 @@
 import paths from 'assets/script/paths'
 
-export default {
+const menuEntries = {
+  'Manage sessions': [
+    {
+      title: 'Exam sessions',
+      icon: 'fa-graduation-cap',
+      to: paths.examSessions
+    }
+  ],
   'Manage professors': [
     {
       title: 'Professors',
@@ -14,12 +21,19 @@ export default {
       icon: 'fa-user-graduate',
       to: paths.students
     }
-  ],
-  Logout: [
-    {
-      title: 'Logout',
-      icon: 'fa-sign-out-alt',
-      to: paths.logout
-    }
   ]
+}
+
+const logout = {
+  title: 'Logout',
+  icon: 'fa-sign-out-alt',
+  to: paths.logout,
+  priority: -1
+}
+
+export default function resolve(permissions) {
+  const entries = permissions.flatMap(p => menuEntries[p] || [])
+  entries.push(logout)
+
+  return entries
 }

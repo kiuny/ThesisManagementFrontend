@@ -11,7 +11,7 @@
         :row="$vuetify.breakpoint.xs"
         :column="$vuetify.breakpoint.smAndUp"
       >
-        <ProfessorList></ProfessorList>
+        <StudentList></StudentList>
       </v-flex>
       <v-flex
         xs12
@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import ProfessorList from '../components/ProfessorList'
+import StudentList from '../components/StudentList.vue'
 export default {
-  components: { ProfessorList }
+  components: { StudentList }
 }
 </script>
 
