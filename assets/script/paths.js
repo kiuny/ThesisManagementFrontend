@@ -4,7 +4,8 @@ export default {
   register: '/register',
   professors: '/professors',
   dashboard: '/',
-  papers: '/papers',
+  paper: '/paper',
+  evaluators: '/evaluators',
 
   professor: id => `/professors/${id}`,
   students: '/students',

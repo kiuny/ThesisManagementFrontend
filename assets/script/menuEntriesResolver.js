@@ -24,9 +24,16 @@ const menuEntries = {
   ],
   'Manage thesis papers': [
     {
-      title: 'Thesis papers',
+      title: 'Your thesis paper',
       icon: 'fa-archive',
-      to: paths.papers
+      to: paths.paper
+    }
+  ],
+  'See evaluators': [
+    {
+      title: 'Evaluators',
+      icon: 'fa-chalkboard-teacher',
+      to: paths.evaluators
     }
   ]
 }
