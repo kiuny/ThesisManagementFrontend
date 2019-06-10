@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import endpoints from '../assets/script/endpoints'
+import endpoints from '../../assets/script/endpoints'
 
 export default {
   props: {

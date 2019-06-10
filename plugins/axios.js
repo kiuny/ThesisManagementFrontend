@@ -4,6 +4,7 @@ const addAuthToken = config => {
   if (authToken) {
     config.headers.Authorization = authToken
   }
+
   return config
 }
 

@@ -1,17 +1,11 @@
 <template>
-  <v-btn v-bind="$attrs" :loading="loading" v-on="$listeners" @click="run">
+  <v-btn v-bind="$attrs" :loading="loading" @click.stop="run" v-on="$listeners">
     <slot />
   </v-btn>
 </template>
 
 <script>
 export default {
-  props: {
-    action: {
-      type: Function,
-      required: true
-    }
-  },
   data() {
     return {
       loading: false
@@ -20,8 +14,7 @@ export default {
   methods: {
     async run() {
       this.loading = true
-      await this.action()
-      this.loading = false
+      this.$emit('click', () => (this.loading = false))
     }
   }
 }

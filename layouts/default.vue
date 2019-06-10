@@ -29,7 +29,9 @@
 
     <v-toolbar clipped-left fixed app>
       <v-toolbar-title>
-        <v-toolbar-side-icon @click="toggleDrawer" />
+        <v-toolbar-side-icon @click="toggleDrawer">
+          <v-icon>fa-bars</v-icon>
+        </v-toolbar-side-icon>
         <nuxt-link to="/" class="dashboard-link text--primary">
           Thesis manager</nuxt-link
         >

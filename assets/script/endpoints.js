@@ -26,5 +26,14 @@ export default {
     create: '/sessions',
     index: '/sessions',
     delete: id => `/sessions/${id}`
+  },
+
+  gradingScheme: {
+    getCategories: examSession => `/sessions/${examSession}/gradingCategory`,
+    save: examSession => `/sessions/${examSession}/gradingCategory/`,
+    update: id => `/gradingCategory/${id}`,
+    deleteCategory: id => `/gradingCategory/${id}`,
+    increment: id => `/gradingCategory/${id}/increment`,
+    decrement: id => `/gradingCategory/${id}/decrement`
   }
 }

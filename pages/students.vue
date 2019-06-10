@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import StudentList from '../components/StudentList.vue'
+import StudentList from '../components/student/StudentList.vue'
 export default {
   components: { StudentList }
 }

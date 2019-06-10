@@ -8,9 +8,9 @@
             label="From all devices"
             color="primary"
           ></v-checkbox>
-          <AsyncButton :action="logoutPressed" color="primary" block
-            >Logout</AsyncButton
-          >
+          <AsyncButton block color="primary" @click="logoutPressed">
+            Logout
+          </AsyncButton>
         </v-form>
       </v-flex>
     </v-layout>
@@ -34,8 +34,11 @@ export default {
     ...mapActions('auth', {
       logout: 'logout'
     }),
-    logoutPressed() {
-      return this.logout(this.fromAllDevices).then(() => this.$router.push('/'))
+    logoutPressed(done) {
+      return this.logout(this.fromAllDevices).then(() => {
+        done()
+        this.$router.push('/')
+      })
     }
   }
 }

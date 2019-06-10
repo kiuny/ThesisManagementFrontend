@@ -20,8 +20,9 @@ export default {
         this.errors = response.data.errors
       }
     },
-    clearErrors() {
+    clearErrors(v) {
       this.errors = {}
+      return v
     }
   }
 }

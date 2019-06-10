@@ -21,8 +21,8 @@
             label="Remember me"
             color="primary"
           ></v-checkbox>
-          <AsyncButton :action="loginPressed" color="primary" block
-            >Login
+          <AsyncButton block color="primary" @click="loginPressed">
+            Login
           </AsyncButton>
         </v-form>
       </v-flex>
@@ -49,13 +49,16 @@ export default {
     ...mapActions('auth', {
       login: 'login'
     }),
-    loginPressed() {
+    loginPressed(done) {
       return this.login({
         email: this.email,
         password: this.password,
         remember_me: this.remember_me
       })
-        .then(this.clearErrors)
+        .then(() => {
+          this.clearErrors()
+          done()
+        })
         .catch(this.errorHandling)
     }
   }

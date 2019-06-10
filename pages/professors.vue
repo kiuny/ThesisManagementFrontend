@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import ProfessorList from '../components/ProfessorList'
+import ProfessorList from '../components/professor/ProfessorList'
 export default {
   components: { ProfessorList }
 }

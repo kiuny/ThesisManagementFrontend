@@ -2,13 +2,18 @@ export default {
   login: '/login',
   logout: '/logout',
   register: '/register',
-  professors: '/professors',
   dashboard: '/',
   paper: '/paper',
-  evaluators: '/evaluators',
 
+  evaluators: '/evaluators',
+  evaluator: id => `/evaluators/${id}`,
+
+  professors: '/professors',
   professor: id => `/professors/${id}`,
+
   students: '/students',
+  student: id => `/students/${id}`,
+
   examSessions: '/examSessions',
-  student: id => `/students/${id}`
+  session: id => `/examSessions/${id}`
 }

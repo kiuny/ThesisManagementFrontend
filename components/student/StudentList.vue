@@ -7,7 +7,7 @@
       label="Add new student by email"
       :error-messages="errors.email"
       single-line
-      append-outer-icon="add"
+      append-outer-icon="fa-plus"
       @click:append-outer="addStudent"
     >
     </v-text-field>
@@ -17,7 +17,7 @@
       color="secondary"
       label="Search"
       single-line
-      append-outer-icon="search"
+      append-outer-icon="fa-search"
       clearable
     >
     </v-text-field>
@@ -48,9 +48,9 @@
 </template>
 
 <script>
-import endpoints from '../assets/script/endpoints'
-import paths from '../assets/script/paths'
-import errorHandlingMixin from './errorHandlingMixin'
+import endpoints from '../../assets/script/endpoints'
+import paths from '../../assets/script/paths'
+import errorHandlingMixin from '../errorHandlingMixin'
 
 export default {
   mixins: [errorHandlingMixin],

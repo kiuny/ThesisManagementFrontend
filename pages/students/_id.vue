@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Student from '../../components/Student'
+import Student from '../../components/student/Student'
 export default {
   components: { Student },
   validate({ params }) {

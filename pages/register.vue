@@ -23,7 +23,7 @@
             :error-messages="errors.password"
           ></v-text-field>
 
-          <AsyncButton :action="register" color="primary" block>
+          <AsyncButton color="primary" block @click="register">
             Register
           </AsyncButton>
         </v-form>
@@ -52,7 +52,7 @@ export default {
     ...mapActions('auth', {
       getUser: 'getUser'
     }),
-    register() {
+    register(done) {
       return this.$axios
         .$post(endpoints.register, {
           name: this.name,
@@ -60,7 +60,10 @@ export default {
           password: this.name
         })
         .then(this.getUser)
-        .then(() => this.$router.push(paths.dashboard))
+        .then(() => {
+          done()
+          this.$router.push(paths.dashboard)
+        })
         .catch(this.errorHandling)
     }
   }
