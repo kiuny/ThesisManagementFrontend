@@ -1,18 +1,11 @@
 <template>
   <v-card class="pa-2">
-    <v-dialog v-model="addingCategory" max-width="400">
+    <v-dialog v-model="addingCategory" max-width="400" persistent>
       <v-card>
-        <v-card-title class="headline">
-          {{ categoryModel.id ? 'Update' : 'Add' }}grading category
-        </v-card-title>
+        <v-card-title class="headline"> {{ categoryModel.id ? 'Update' : 'Add' }}grading category</v-card-title>
         <v-card-text>
           <v-form>
-            <v-text-field
-              ref="name"
-              v-model="categoryModel.name"
-              :error-messages="errors.name"
-              label="Name"
-            >
+            <v-text-field ref="name" v-model="categoryModel.name" :error-messages="errors.name" label="Name">
             </v-text-field>
             <v-text-field
               ref="points"
@@ -42,16 +35,16 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <div
-      v-if="!categories && $asyncComputed.categories.updating"
-      class="text-xs-center"
-    >
+    <div v-if="!categories && $asyncComputed.categories.updating" class="text-xs-center">
       <v-progress-circular indeterminate></v-progress-circular>
     </div>
     <v-list v-if="categories">
       <template v-for="(category, idx) in categories">
         <v-hover :key="category.id">
-          <v-list-tile slot-scope="{ hover }" avatar>
+          <v-list-tile slot-scope="{ hover }">
+            <v-list-tile-avatar>
+              <span v-if="showPointsCategory(category)"> {{ category.points }}p </span>
+            </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title v-text="category.name"></v-list-tile-title>
               <v-list-tile-sub-title
@@ -79,20 +72,20 @@
         <template v-for="(subcategory, subIdx) in category.subcategories">
           <v-hover :key="subcategory.id">
             <v-list-tile slot-scope="{ hover }" class="ml-4">
+              <v-list-tile-avatar>
+                <span v-if="subcategory.points > 0"> {{ subcategory.points }}p </span>
+              </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title>{{ category.name }}</v-list-tile-title>
-                <v-list-tile-sub-title v-if="!!category.description">
-                  {{ category.description }}
+                <v-list-tile-title>{{ subcategory.name }}</v-list-tile-title>
+                <v-list-tile-sub-title v-if="!!subcategory.description">
+                  {{ subcategory.description }}
                 </v-list-tile-sub-title>
               </v-list-tile-content>
               <v-list-tile-action v-show="hover" class="icons">
                 <v-btn icon @click="startEditCategory(subcategory)">
                   <v-icon>fa-pencil-alt</v-icon>
                 </v-btn>
-                <v-btn
-                  icon
-                  @click="deleteCategory(subcategory.id, ...arguments)"
-                >
+                <v-btn icon @click="deleteCategory(subcategory.id, ...arguments)">
                   <v-icon color="red">fa-trash</v-icon>
                 </v-btn>
                 <UpDownButton
@@ -106,9 +99,19 @@
       </template>
     </v-list>
 
-    <v-btn class="ma-0" flat small @click="startAddRootCategoryModal">
-      Add category
-    </v-btn>
+    <v-card-actions>
+      <v-btn class="ma-0" flat @click="startAddRootCategoryModal">
+        Add category
+      </v-btn>
+      <v-spacer></v-spacer>
+      <v-checkbox v-model="percentages" color="secondary" class="point-checkbox" label="Show points as %"></v-checkbox>
+      <v-checkbox
+        v-model="fromTotal"
+        color="secondary"
+        class="point-checkbox"
+        label="Show subcategory points as part of parent"
+      ></v-checkbox>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -130,6 +133,8 @@ export default {
   },
   data() {
     return {
+      percentages: false,
+      fromTotal: false,
       dialog: false,
       addingCategory: false,
       categoryModel: {},
@@ -142,9 +147,7 @@ export default {
   },
   asyncComputed: {
     categories() {
-      return this.$axios
-        .$get(endpoints.gradingScheme.getCategories(this.examSession))
-        .catch(this.errorHandling)
+      return this.$axios.$get(endpoints.gradingScheme.getCategories(this.examSession)).catch(this.errorHandling)
     }
   },
   methods: {
@@ -164,10 +167,7 @@ export default {
     },
     addCategory() {
       return this.$axios
-        .$post(
-          endpoints.gradingScheme.save(this.examSession),
-          this.categoryModel
-        )
+        .$post(endpoints.gradingScheme.save(this.examSession), this.categoryModel)
         .then(() => {
           this.clearErrors()
           this.resetAddCategory()
@@ -177,10 +177,7 @@ export default {
     },
     updateCategory() {
       return this.$axios
-        .$post(
-          endpoints.gradingScheme.update(this.categoryModel.id),
-          this.categoryModel
-        )
+        .$post(endpoints.gradingScheme.update(this.categoryModel.id), this.categoryModel)
         .then(() => {
           this.clearErrors()
           this.resetAddCategory()
@@ -194,7 +191,7 @@ export default {
         id: null,
         parent_category_id: null,
         name: '',
-        points: 0,
+        points: 1,
         description: ''
       }
       this.saveAction = () => {}
@@ -213,16 +210,17 @@ export default {
       }
       const categoryId = categories[index].id
       // eslint-disable-next-line
-      categories[index] = [categories[index+1], categories[index+1] = categories[index]][0]
+      categories[index] = [categories[index + 1], (categories[index + 1] = categories[index])][0]
 
-      return this.$axios
-        .post(endpoints.gradingScheme.increment(categoryId))
-        .then(this.$asyncComputed.categories.update)
+      return this.$axios.post(endpoints.gradingScheme.increment(categoryId)).then(this.$asyncComputed.categories.update)
     },
     decrementOrder(categories, index) {
       return this.$axios
         .post(endpoints.gradingScheme.decrement(categories[index].id))
         .then(this.$asyncComputed.categories.update)
+    },
+    showPointsCategory(category) {
+      return category.points > 0 && (!category.subcategories.length || !this.fromTotal)
     }
   }
 }
@@ -236,5 +234,9 @@ export default {
 }
 .icons > * {
   margin: 0;
+}
+.point-checkbox {
+  flex-grow: 0;
+  margin: 0 1em;
 }
 </style>

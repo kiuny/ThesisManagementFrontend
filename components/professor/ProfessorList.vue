@@ -12,14 +12,7 @@
     >
     </v-text-field>
 
-    <v-text-field
-      v-model="filter"
-      color="secondary"
-      label="Search"
-      single-line
-      append-outer-icon="fa-search"
-      clearable
-    >
+    <v-text-field v-model="filter" color="secondary" label="Search" single-line append-outer-icon="fa-search" clearable>
     </v-text-field>
     <v-flex v-if="loadingProfessors" row class="text-xs-center">
       <v-progress-circular indeterminate></v-progress-circular>
@@ -29,10 +22,7 @@
       <template v-for="professor in filteredProfessors">
         <v-divider :key="`divider-${professor.id}`"></v-divider>
 
-        <v-list-tile
-          :key="`tile-${professor.id}`"
-          @click="goToProfessor(professor.id)"
-        >
+        <v-list-tile :key="`tile-${professor.id}`" @click="goToProfessor(professor.id)">
           <v-list-tile-content v-text="professor.name"></v-list-tile-content>
           <v-list-tile-action>
             <v-icon>fa-chevron-right</v-icon>
@@ -64,9 +54,7 @@ export default {
   },
   computed: {
     filteredProfessors() {
-      return this.professors.filter(prof =>
-        prof.name.split(' ').some(word => word.startsWith(this.filter))
-      )
+      return this.professors.filter(prof => prof.name.split(' ').some(word => word.startsWith(this.filter)))
     }
   },
   created() {

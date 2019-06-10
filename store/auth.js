@@ -19,9 +19,7 @@ export const mutations = {
 
 export const actions = {
   login({ commit, dispatch }, credentials) {
-    return this.$axios
-      .$post(endpoints.login, credentials)
-      .then(() => dispatch('getUser'))
+    return this.$axios.$post(endpoints.login, credentials).then(() => dispatch('getUser'))
   },
   getUser({ commit, state }) {
     return this.$axios

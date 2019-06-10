@@ -3,18 +3,8 @@
     <v-layout row justify-center>
       <v-flex xs12 sm8 md6 lg4>
         <v-form>
-          <v-text-field
-            ref="name"
-            v-model="name"
-            label="Name"
-            :error-messages="errors.name"
-          ></v-text-field>
-          <v-text-field
-            ref="email"
-            v-model="email"
-            label="Email"
-            :error-messages="errors.email"
-          ></v-text-field>
+          <v-text-field ref="name" v-model="name" label="Name" :error-messages="errors.name"></v-text-field>
+          <v-text-field ref="email" v-model="email" label="Email" :error-messages="errors.email"></v-text-field>
           <v-text-field
             ref="password"
             v-model="password"

@@ -3,11 +3,7 @@
     <v-layout row justify-center>
       <v-flex xs6 md4>
         <v-form>
-          <v-checkbox
-            v-model="fromAllDevices"
-            label="From all devices"
-            color="primary"
-          ></v-checkbox>
+          <v-checkbox v-model="fromAllDevices" label="From all devices" color="primary"></v-checkbox>
           <v-btn block color="primary" @click="logoutPressed">
             Logout
           </v-btn>

@@ -1,13 +1,7 @@
 <template>
   <v-container v-if="student">
     <v-card>
-      <v-layout
-        pa-3
-        justify-start
-        :row="$vuetify.breakpoint.smAndUp"
-        :column="$vuetify.breakpoint.xs"
-        align-center
-      >
+      <v-layout pa-3 justify-start :row="$vuetify.breakpoint.smAndUp" :column="$vuetify.breakpoint.xs" align-center>
         <v-layout column>
           <dl>
             <dt class="caption grey--text">Name</dt>

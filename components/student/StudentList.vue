@@ -12,14 +12,7 @@
     >
     </v-text-field>
 
-    <v-text-field
-      v-model="filter"
-      color="secondary"
-      label="Search"
-      single-line
-      append-outer-icon="fa-search"
-      clearable
-    >
+    <v-text-field v-model="filter" color="secondary" label="Search" single-line append-outer-icon="fa-search" clearable>
     </v-text-field>
     <v-flex v-if="$asyncComputed.students.updating" row class="text-xs-center">
       <v-progress-circular indeterminate></v-progress-circular>
@@ -29,10 +22,7 @@
       <template v-for="student in filteredStudents">
         <v-divider :key="`divider-${student.id}`"></v-divider>
 
-        <v-list-tile
-          :key="`tile-${student.id}`"
-          @click="goToStudent(student.id)"
-        >
+        <v-list-tile :key="`tile-${student.id}`" @click="goToStudent(student.id)">
           <v-list-tile-content v-text="student.name"></v-list-tile-content>
           <v-list-tile-action>
             <v-icon>fa-chevron-right</v-icon>
@@ -70,9 +60,7 @@ export default {
       // if (!this.$asyncComputed.students.success) {
       //   return []
       // }
-      return this.students.filter(student =>
-        student.name.split(' ').some(word => word.startsWith(this.filter))
-      )
+      return this.students.filter(student => student.name.split(' ').some(word => word.startsWith(this.filter)))
     }
   },
   methods: {

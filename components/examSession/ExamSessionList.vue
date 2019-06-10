@@ -18,10 +18,7 @@
     <v-list v-if="$asyncComputed.examSessions.success && examSessions.length">
       <template v-for="examSession in examSessions">
         <v-divider :key="`divider-${examSession.id}`"></v-divider>
-        <v-list-tile
-          :key="`tile-${examSession.id}`"
-          @click="goToSession(examSession.name)"
-        >
+        <v-list-tile :key="`tile-${examSession.id}`" @click="goToSession(examSession.name)">
           <v-list-tile-content v-text="examSession.name"></v-list-tile-content>
         </v-list-tile>
       </template>

@@ -18,6 +18,7 @@ module.exports = {
   // add your custom rules here
   rules: {
     'no-console': 'off',
-    'require-await': 'off'
+    'require-await': 'off',
+    'max-len': ['warn', 120]
   }
 }

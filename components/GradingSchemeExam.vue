@@ -3,11 +3,7 @@
     <table>
       <tbody>
         <tr>
-          <td
-            v-for="(category, i) in categories"
-            :key="i"
-            :colspan="1 + category.subcategories.length || 1"
-          >
+          <td v-for="(category, i) in categories" :key="i" :colspan="1 + category.subcategories.length || 1">
             <span v-if="!category.editing" @click="enableEdit(category)">
               {{ category.name }}
             </span>
@@ -28,10 +24,7 @@
         </tr>
         <tr>
           <template v-for="(category, i) in categories">
-            <td
-              v-for="(subcategory, j) in category.subcategories"
-              :key="`subcat-${i}-${j}`"
-            >
+            <td v-for="(subcategory, j) in category.subcategories" :key="`subcat-${i}-${j}`">
               <span v-if="!category.editing" @click="enableEdit(subcategory)">
                 {{ subcategory.name }}
               </span>

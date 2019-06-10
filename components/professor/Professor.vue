@@ -1,13 +1,7 @@
 <template>
   <v-container v-if="professor">
     <v-card>
-      <v-layout
-        pa-3
-        justify-start
-        :row="$vuetify.breakpoint.smAndUp"
-        :column="$vuetify.breakpoint.xs"
-        align-center
-      >
+      <v-layout pa-3 justify-start :row="$vuetify.breakpoint.smAndUp" :column="$vuetify.breakpoint.xs" align-center>
         <img
           v-if="hasDetails"
           class="mr-3"
@@ -35,12 +29,7 @@
     </v-card>
 
     <v-card class="mt-3">
-      <v-layout
-        pa-2
-        :row="$vuetify.breakpoint.smAndUp"
-        :column="$vuetify.breakpoint.xs"
-        justify-center
-      >
+      <v-layout pa-2 :row="$vuetify.breakpoint.smAndUp" :column="$vuetify.breakpoint.xs" justify-center>
         <v-flex mx-1 shrink align-self-center>
           <v-checkbox
             :input-value="professor.isEvaluator"
@@ -95,9 +84,7 @@ export default {
         .then(() => this.$asyncComputed.professor.update())
     },
     reimportData() {
-      return this.$axios
-        .$post(endpoints.professors.reimport(this.id))
-        .then(this.$asyncComputed.professor.update)
+      return this.$axios.$post(endpoints.professors.reimport(this.id)).then(this.$asyncComputed.professor.update)
     }
   },
   asyncComputed: {
