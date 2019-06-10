@@ -8,9 +8,9 @@
             label="From all devices"
             color="primary"
           ></v-checkbox>
-          <AsyncButton block color="primary" @click="logoutPressed">
+          <v-btn block color="primary" @click="logoutPressed">
             Logout
-          </AsyncButton>
+          </v-btn>
         </v-form>
       </v-flex>
     </v-layout>
@@ -19,12 +19,8 @@
 
 <script>
 import { mapActions } from 'vuex'
-import AsyncButton from '../components/AsyncButton'
 
 export default {
-  components: {
-    AsyncButton
-  },
   data() {
     return {
       fromAllDevices: false
@@ -34,11 +30,8 @@ export default {
     ...mapActions('auth', {
       logout: 'logout'
     }),
-    logoutPressed(done) {
-      return this.logout(this.fromAllDevices).then(() => {
-        done()
-        this.$router.push('/')
-      })
+    logoutPressed() {
+      return this.logout(this.fromAllDevices).then(() => this.$router.push('/'))
     }
   }
 }

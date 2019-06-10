@@ -20,9 +20,9 @@
         <v-divider :key="`divider-${examSession.id}`"></v-divider>
         <v-list-tile
           :key="`tile-${examSession.id}`"
-          @click="goToSession(examSession.id)"
+          @click="goToSession(examSession.name)"
         >
-          <v-list-tile-content v-text="examSession.id"></v-list-tile-content>
+          <v-list-tile-content v-text="examSession.name"></v-list-tile-content>
         </v-list-tile>
       </template>
     </v-list>

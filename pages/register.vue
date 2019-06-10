@@ -23,9 +23,9 @@
             :error-messages="errors.password"
           ></v-text-field>
 
-          <AsyncButton color="primary" block @click="register">
+          <v-btn color="primary" block @click="register">
             Register
-          </AsyncButton>
+          </v-btn>
         </v-form>
       </v-flex>
     </v-layout>
@@ -34,12 +34,10 @@
 
 <script>
 import { mapActions } from 'vuex'
-import AsyncButton from '../components/AsyncButton'
 import endpoints from '../assets/script/endpoints'
 import errorHandlingMixin from '../components/errorHandlingMixin'
 import paths from '../assets/script/paths'
 export default {
-  components: { AsyncButton },
   mixins: [errorHandlingMixin],
   data() {
     return {
@@ -52,7 +50,7 @@ export default {
     ...mapActions('auth', {
       getUser: 'getUser'
     }),
-    register(done) {
+    register() {
       return this.$axios
         .$post(endpoints.register, {
           name: this.name,
@@ -60,10 +58,7 @@ export default {
           password: this.name
         })
         .then(this.getUser)
-        .then(() => {
-          done()
-          this.$router.push(paths.dashboard)
-        })
+        .then(() => this.$router.push(paths.dashboard))
         .catch(this.errorHandling)
     }
   }

@@ -58,7 +58,7 @@
           ></v-checkbox>
         </v-flex>
         <v-flex mx-1 shrink align-self-center>
-          <AsyncButton @click="reimportData">Reimport details</AsyncButton>
+          <v-btn @click="reimportData">Reimport details</v-btn>
         </v-flex>
       </v-layout>
     </v-card>
@@ -67,10 +67,8 @@
 
 <script>
 import endpoints from '../../assets/script/endpoints'
-import AsyncButton from '../AsyncButton'
 
 export default {
-  components: { AsyncButton },
   props: {
     id: {
       type: String,
@@ -96,11 +94,10 @@ export default {
         .$post(endpoints.professors.toggleCoordinator(this.id))
         .then(() => this.$asyncComputed.professor.update())
     },
-    reimportData(done) {
+    reimportData() {
       return this.$axios
         .$post(endpoints.professors.reimport(this.id))
         .then(this.$asyncComputed.professor.update)
-        .then(done)
     }
   },
   asyncComputed: {

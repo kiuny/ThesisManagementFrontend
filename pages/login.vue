@@ -21,9 +21,9 @@
             label="Remember me"
             color="primary"
           ></v-checkbox>
-          <AsyncButton block color="primary" @click="loginPressed">
+          <v-btn block color="primary" @click="loginPressed">
             Login
-          </AsyncButton>
+          </v-btn>
         </v-form>
       </v-flex>
     </v-layout>
@@ -32,11 +32,9 @@
 
 <script>
 import { mapActions } from 'vuex'
-import AsyncButton from '../components/AsyncButton'
 import errorHandlingMixin from '../components/errorHandlingMixin'
 
 export default {
-  components: { AsyncButton },
   mixins: [errorHandlingMixin],
   data() {
     return {
@@ -49,16 +47,13 @@ export default {
     ...mapActions('auth', {
       login: 'login'
     }),
-    loginPressed(done) {
+    loginPressed() {
       return this.login({
         email: this.email,
         password: this.password,
         remember_me: this.remember_me
       })
-        .then(() => {
-          this.clearErrors()
-          done()
-        })
+        .then(this.clearErrors)
         .catch(this.errorHandling)
     }
   }

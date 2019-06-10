@@ -33,106 +33,76 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <AsyncButton color="success" flat @click="saveAction">
+          <v-btn color="success" flat @click="saveAction">
             Save
-          </AsyncButton>
+          </v-btn>
           <v-btn color="warning" flat @click="resetAddCategory">
             Cancel
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <div v-if="$asyncComputed.categories.updating" class="text-xs-center">
+    <div
+      v-if="!categories && $asyncComputed.categories.updating"
+      class="text-xs-center"
+    >
       <v-progress-circular indeterminate></v-progress-circular>
     </div>
-    <v-list v-else>
+    <v-list v-if="categories">
       <template v-for="(category, idx) in categories">
-        <v-list-group
-          v-if="category.subcategories && category.subcategories.length > 0"
-          :key="category.id"
-        >
-          <template v-slot:activator>
-            <v-list-tile>
+        <v-hover :key="category.id">
+          <v-list-tile slot-scope="{ hover }" avatar>
+            <v-list-tile-content>
+              <v-list-tile-title v-text="category.name"></v-list-tile-title>
+              <v-list-tile-sub-title
+                v-if="!!category.description"
+                v-text="category.description"
+              ></v-list-tile-sub-title>
+            </v-list-tile-content>
+            <v-list-tile-action v-show="hover" class="icons">
+              <v-btn icon @click="startAddSubcategory(category)">
+                <v-icon>fa-plus </v-icon>
+              </v-btn>
+              <v-btn icon @click="startEditCategory(category)">
+                <v-icon>fa-pencil-alt</v-icon>
+              </v-btn>
+              <v-btn icon @click="deleteCategory(category.id, ...arguments)">
+                <v-icon color="red">fa-trash</v-icon>
+              </v-btn>
+              <UpDownButton
+                @down="incrementOrder(categories, idx)"
+                @up="decrementOrder(categories, idx)"
+              ></UpDownButton>
+            </v-list-tile-action>
+          </v-list-tile>
+        </v-hover>
+        <template v-for="(subcategory, subIdx) in category.subcategories">
+          <v-hover :key="subcategory.id">
+            <v-list-tile slot-scope="{ hover }" class="ml-4">
               <v-list-tile-content>
                 <v-list-tile-title>{{ category.name }}</v-list-tile-title>
                 <v-list-tile-sub-title v-if="!!category.description">
                   {{ category.description }}
                 </v-list-tile-sub-title>
               </v-list-tile-content>
-
-              <v-list-tile-action>
-                <v-btn icon @click="startAddSubcategory(category)">
-                  <v-icon>fa-plus</v-icon>
+              <v-list-tile-action v-show="hover" class="icons">
+                <v-btn icon @click="startEditCategory(subcategory)">
+                  <v-icon>fa-pencil-alt</v-icon>
                 </v-btn>
-                <AsyncButton
+                <v-btn
                   icon
-                  @click="deleteCategory(categories, idx, ...argument)"
+                  @click="deleteCategory(subcategory.id, ...arguments)"
                 >
                   <v-icon color="red">fa-trash</v-icon>
-                </AsyncButton>
+                </v-btn>
                 <UpDownButton
-                  @down="incrementOrder(category)"
-                  @up="decrementOrder(category)"
+                  @up="decrementOrder(category.subcategories, subIdx)"
+                  @down="incrementOrder(category.subcategories, subIdx)"
                 ></UpDownButton>
               </v-list-tile-action>
             </v-list-tile>
-          </template>
-          <v-list-tile
-            v-for="subcategory in categories.subcategories"
-            :key="subcategory.id"
-          >
-            <v-list-tile-content>
-              <v-list-tile-title>{{ category.name }}</v-list-tile-title>
-              <v-list-tile-sub-title v-if="!!category.description">
-                {{ category.description }}
-              </v-list-tile-sub-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-btn icon @click="startEditCategory(subcategory)">
-                <v-icon>fa-pencil-alt</v-icon>
-              </v-btn>
-
-              <AsyncButton
-                icon
-                @click="deleteCategory(subcategory.id, ...arguments)"
-              >
-                <v-icon color="red">fa-trash</v-icon>
-              </AsyncButton>
-              <UpDownButton
-                @up="decrementOrder(subcategory)"
-                @down="incrementOrder(subcategory)"
-              ></UpDownButton>
-            </v-list-tile-action>
-          </v-list-tile>
-        </v-list-group>
-
-        <v-list-tile v-else :key="category.id">
-          <v-list-tile-content>
-            <v-list-tile-title v-text="category.name"></v-list-tile-title>
-            <v-list-tile-sub-title
-              v-if="!!category.description"
-              v-text="category.description"
-            ></v-list-tile-sub-title>
-          </v-list-tile-content>
-          <v-list-tile-action class="icons">
-            <v-btn icon @click="startAddSubcategory(category)">
-              <v-icon>fa-plus </v-icon>
-            </v-btn>
-            <v-btn icon @click="startEditCategory(category)">
-              <v-icon>fa-pencil-alt</v-icon>
-            </v-btn>
-            <AsyncButton
-              icon
-              @click="deleteCategory(category.id, ...arguments)"
-            >
-              <v-icon color="red">fa-trash</v-icon>
-            </AsyncButton>
-            <UpDownButton
-              @down="incrementOrder(category)"
-              @up="decrementOrder(category)"
-            ></UpDownButton>
-          </v-list-tile-action>
-        </v-list-tile>
+          </v-hover>
+        </template>
       </template>
     </v-list>
 
@@ -146,11 +116,9 @@
 import endpoints from '../assets/script/endpoints'
 import UpDownButton from './UpDownButton'
 import errorHandlingMixin from './errorHandlingMixin'
-import AsyncButton from './AsyncButton'
 
 export default {
   components: {
-    AsyncButton,
     UpDownButton
   },
   mixins: [errorHandlingMixin],
@@ -190,11 +158,11 @@ export default {
       this.addingCategory = true
     },
     startEditCategory(category) {
-      this.categoryModel = category
+      this.categoryModel = { ...category }
       this.addingCategory = true
       this.saveAction = this.updateCategory
     },
-    addCategory(done) {
+    addCategory() {
       return this.$axios
         .$post(
           endpoints.gradingScheme.save(this.examSession),
@@ -205,10 +173,9 @@ export default {
           this.resetAddCategory()
           return this.$asyncComputed.categories.update()
         })
-        .then(done)
         .catch(this.errorHandling)
     },
-    updateCategory(done) {
+    updateCategory() {
       return this.$axios
         .$post(
           endpoints.gradingScheme.update(this.categoryModel.id),
@@ -219,7 +186,6 @@ export default {
           this.resetAddCategory()
           return this.$asyncComputed.categories.update()
         })
-        .then(done)
         .catch(this.errorHandling)
     },
     resetAddCategory() {
@@ -233,21 +199,29 @@ export default {
       }
       this.saveAction = () => {}
     },
-    deleteCategory(id, done) {
+    deleteCategory(id) {
       return this.$axios
         .$delete(endpoints.gradingScheme.deleteCategory(id))
-        .then(this.$asyncComputed.categories.update)
-        .then(done)
+        .then(() => {
+          this.$asyncComputed.categories.update()
+        })
         .catch(this.errorHandling)
     },
-    incrementOrder(category) {
+    incrementOrder(categories, index) {
+      if (index + 1 === categories.length) {
+        return
+      }
+      const categoryId = categories[index].id
+      // eslint-disable-next-line
+      categories[index] = [categories[index+1], categories[index+1] = categories[index]][0]
+
       return this.$axios
-        .post(endpoints.gradingScheme.increment(category.id))
+        .post(endpoints.gradingScheme.increment(categoryId))
         .then(this.$asyncComputed.categories.update)
     },
-    decrementOrder(category) {
+    decrementOrder(categories, index) {
       return this.$axios
-        .post(endpoints.gradingScheme.decrement(category.id))
+        .post(endpoints.gradingScheme.decrement(categories[index].id))
         .then(this.$asyncComputed.categories.update)
     }
   }
@@ -259,5 +233,8 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+.icons > * {
+  margin: 0;
 }
 </style>
