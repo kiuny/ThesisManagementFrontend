@@ -43,7 +43,7 @@
         <v-hover :key="category.id">
           <v-list-tile slot-scope="{ hover }">
             <v-list-tile-avatar>
-              <span v-if="showPointsCategory(category)"> {{ category.points }}p </span>
+              <span v-text="showPointsCategory(category)"></span>
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title v-text="category.name"></v-list-tile-title>
@@ -73,7 +73,7 @@
           <v-hover :key="subcategory.id">
             <v-list-tile slot-scope="{ hover }" class="ml-4">
               <v-list-tile-avatar>
-                <span v-if="subcategory.points > 0"> {{ subcategory.points }}p </span>
+                <span v-text="showPointsSubcategory(category, subcategory)"></span>
               </v-list-tile-avatar>
               <v-list-tile-content>
                 <v-list-tile-title>{{ subcategory.name }}</v-list-tile-title>
@@ -140,6 +140,11 @@ export default {
       categoryModel: {},
       targetForCategory: null,
       saveAction: null
+    }
+  },
+  computed: {
+    totalPoints() {
+      return this.categories.map(cat => cat.points).reduce((acc, current) => acc + current, 0)
     }
   },
   created() {
@@ -220,7 +225,26 @@ export default {
         .then(this.$asyncComputed.categories.update)
     },
     showPointsCategory(category) {
-      return category.points > 0 && (!category.subcategories.length || !this.fromTotal)
+      if (category.subcategories.length > 0 && this.fromTotal) {
+        return ''
+      }
+      if (this.percentages) {
+        return Math.round((category.points / this.totalPoints) * 100 * 100) / 100 + 'p'
+      }
+      return category.points + 'p'
+    },
+    showPointsSubcategory(category, subcategory) {
+      if (this.percentages) {
+        const total = category.subcategories.map(cat => cat.points).reduce((acc, current) => acc + current, 0)
+
+        return Math.round((subcategory.points / total) * 100 * 100) / 100 + 'p'
+      }
+      if (this.fromTotal) {
+        const total = category.subcategories.map(cat => cat.points).reduce((acc, current) => acc + current, 0)
+
+        return (category.points / this.totalPoints) * (subcategory.points / total)
+      }
+      return subcategory.points + 'p'
     }
   }
 }
