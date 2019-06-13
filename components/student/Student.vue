@@ -19,7 +19,7 @@
     </v-card>
 
     <template v-if="papers">
-      <PaperCard class="mt-1" v-for="paper in papers" :key="paper.id" :paper="paper"></PaperCard>
+      <PaperCard v-for="paper in papers" :key="paper.id" class="mt-1" :paper="paper"></PaperCard>
     </template>
   </v-container>
 </template>

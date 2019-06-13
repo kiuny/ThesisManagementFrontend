@@ -34,11 +34,10 @@ export default {
   data() {
     return {
       review: {
-        text: '',
-
+        text: ''
       }
     }
-  }
+  },
   methods: {
     downloadPaper() {
       return this.$axios
