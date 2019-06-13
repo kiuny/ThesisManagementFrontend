@@ -40,7 +40,8 @@ export default {
   papers: {
     getMine: '/papers/mine',
     upload: '/papers',
-    download: id => `papers/${id}/download`
+    download: id => `papers/${id}/download`,
+    getForUser: id => `papers/user/${id}`
   },
   comments: {
     getForPapeer: id => `/papers/${id}/messages`,

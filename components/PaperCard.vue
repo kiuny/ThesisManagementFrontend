@@ -7,7 +7,12 @@
       <span class="font-italic">Uploaded at: {{ paper.created_at }}</span>
     </v-card-title>
     <v-card-text>
-      <!-- todo details at some point later -->
+      <div v-if="withReview">
+        <v-form>
+          <v-textarea></v-textarea>
+          <v-checkbox></v-checkbox>
+        </v-form>
+      </div>
     </v-card-text>
   </v-card>
 </template>
@@ -20,8 +25,20 @@ export default {
     paper: {
       type: Object,
       required: true
+    },
+    withReview: {
+      type: Boolean,
+      default: false
     }
   },
+  data() {
+    return {
+      review: {
+        text: '',
+
+      }
+    }
+  }
   methods: {
     downloadPaper() {
       return this.$axios
