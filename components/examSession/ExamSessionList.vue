@@ -1,11 +1,11 @@
 <template>
   <v-card class="px-3 py-2">
     <v-text-field
-      ref="id"
-      v-model="id"
+      ref="name"
+      v-model="name"
       color="primary"
       label="New exam session"
-      :error-messages="errors.id"
+      :error-messages="errors.name"
       single-line
       append-outer-icon="fa-plus"
       @click:append-outer="addSession"
@@ -35,7 +35,7 @@ export default {
   mixins: [errorHandlingMixin],
   data() {
     return {
-      id: ''
+      name: ''
     }
   },
   asyncComputed: {
@@ -49,7 +49,7 @@ export default {
   methods: {
     addSession() {
       this.$axios
-        .$post(endpoints.sessions.create, { id: this.id })
+        .$post(endpoints.sessions.create, { name: this.name })
         .then(this.$asyncComputed.examSessions.update())
         .catch(this.errorHandling)
     },

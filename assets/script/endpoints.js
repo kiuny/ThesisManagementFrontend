@@ -35,5 +35,17 @@ export default {
     deleteCategory: id => `/gradingCategory/${id}`,
     increment: id => `/gradingCategory/${id}/increment`,
     decrement: id => `/gradingCategory/${id}/decrement`
+  },
+
+  papers: {
+    getMine: '/papers/mine',
+    upload: '/papers',
+    download: id => `papers/${id}/download`
+  },
+  comments: {
+    getForPapeer: id => `/papers/${id}/messages`,
+    sendMessage: id => `/papers/${id}/messages`,
+    edit: id => `/comments/${id}`,
+    delete: id => `/comments/${id}`
   }
 }
