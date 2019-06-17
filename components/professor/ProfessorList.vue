@@ -5,7 +5,6 @@
       v-model="email"
       color="primary"
       label="Add new professor by email"
-      :error-messages="errors.email"
       single-line
       append-outer-icon="fa-plus"
       @click:append-outer="addProfessor"
@@ -14,12 +13,12 @@
 
     <v-text-field v-model="filter" color="secondary" label="Search" single-line append-outer-icon="fa-search" clearable>
     </v-text-field>
-    <v-flex v-if="loadingProfessors" row class="text-xs-center">
+    <v-flex v-if="!professors" row class="text-xs-center">
       <v-progress-circular indeterminate></v-progress-circular>
     </v-flex>
 
-    <v-list v-if="!loadingProfessors">
-      <template v-for="professor in filteredProfessors">
+    <v-list>
+      <template v-for="professor in professors">
         <v-divider :key="`divider-${professor.id}`"></v-divider>
 
         <v-list-tile :key="`tile-${professor.id}`" @click="goToProfessor(professor.id)">
@@ -38,53 +37,37 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import filter from 'lodash/filter'
 import endpoints from '../../assets/script/endpoints'
 import paths from '../../assets/script/paths'
-import errorHandlingMixin from '../errorHandlingMixin'
 
 export default {
-  mixins: [errorHandlingMixin],
   data() {
     return {
-      professors: [],
       email: '',
-      filter: '',
-      loadingProfessors: false
+      filter: ''
     }
   },
   computed: {
+    ...mapState('professors', ['professors']),
     filteredProfessors() {
-      return this.professors.filter(prof => prof.name.split(' ').some(word => word.startsWith(this.filter)))
+      return filter(this.professors, prof => prof.name.split(' ').some(word => word.startsWith(this.filter)))
     }
   },
   created() {
-    this.loadProfessors()
+    this.$store.dispatch('professors/loadProfessors')
   },
   methods: {
     goToProfessor(id) {
       this.$router.push(paths.professor(id))
-    },
-    loadProfessors() {
-      this.loadingProfessors = true
-      this.$axios
-        .$get(endpoints.professors.index)
-        .then(result => {
-          this.professors = result
-          this.loadingProfessors = false
-        })
-        .catch(this.errorHandling)
     },
     addProfessor() {
       this.$axios
         .$post(endpoints.professors.create, {
           email: this.email
         })
-        .then(() => {
-          this.email = ''
-          this.loadProfessors()
-          this.clearErrors()
-        })
-        .catch(this.errorHandling)
+        .then(() => (this.email = ''))
     }
   }
 }

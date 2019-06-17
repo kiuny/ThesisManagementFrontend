@@ -18,8 +18,7 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
         rel: 'stylesheet',
-        href:
-          'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
+        href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'
       }
     ]
   },
@@ -42,13 +41,14 @@ export default {
     '@/plugins/axios',
     '@/plugins/initializeAuth',
     '@/plugins/notifications',
-    '@/plugins/AsyncComputed'
+    '@/plugins/AsyncComputed',
+    '@/plugins/echo'
   ],
 
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/axios'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/dotenv'],
   /*
    ** Axios module configuration
    */

@@ -18,14 +18,12 @@
       </v-layout>
     </v-card>
 
-    <template v-if="papers">
-      <PaperCard v-for="paper in papers" :key="paper.id" class="mt-1" :paper="paper"></PaperCard>
-    </template>
+    <PaperCard v-for="paper in student.papers" :key="paper.id" class="mt-1" :paper="paper"></PaperCard>
   </v-container>
 </template>
 
 <script>
-import endpoints from '../../assets/script/endpoints'
+import { mapGetters } from 'vuex'
 import PaperCard from '../PaperCard'
 
 export default {
@@ -36,15 +34,14 @@ export default {
       required: true
     }
   },
-  asyncComputed: {
-    student: {
-      get() {
-        return this.$axios.$get(endpoints.students.get(this.id))
-      }
-    },
-    papers() {
-      return this.$axios.$get(endpoints.papers.getForUser(this.id))
+  computed: {
+    ...mapGetters('students', ['getStudent']),
+    student() {
+      return this.getStudent(this.id)
     }
+  },
+  created() {
+    this.$store.dispatch('students/loadStudent', this.id)
   }
 }
 </script>

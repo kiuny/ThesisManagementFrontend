@@ -14,11 +14,11 @@
 
     <v-text-field v-model="filter" color="secondary" label="Search" single-line append-outer-icon="fa-search" clearable>
     </v-text-field>
-    <v-flex v-if="$asyncComputed.students.updating" row class="text-xs-center">
+    <v-flex v-if="!students" row class="text-xs-center">
       <v-progress-circular indeterminate></v-progress-circular>
     </v-flex>
 
-    <v-list v-if="$asyncComputed.students.success">
+    <v-list>
       <template v-for="student in filteredStudents">
         <v-divider :key="`divider-${student.id}`"></v-divider>
 
@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import filter from 'lodash/filter'
 import endpoints from '../../assets/script/endpoints'
 import paths from '../../assets/script/paths'
 import errorHandlingMixin from '../errorHandlingMixin'
@@ -50,18 +52,14 @@ export default {
       filter: ''
     }
   },
-  asyncComputed: {
-    async students() {
-      return this.$axios.$get(endpoints.students.index)
+  computed: {
+    ...mapState('students', ['students']),
+    filteredStudents() {
+      return filter(this.students, student => student.name.split(' ').some(word => word.startsWith(this.filter)))
     }
   },
-  computed: {
-    filteredStudents() {
-      // if (!this.$asyncComputed.students.success) {
-      //   return []
-      // }
-      return this.students.filter(student => student.name.split(' ').some(word => word.startsWith(this.filter)))
-    }
+  created() {
+    this.$store.dispatch('students/loadStudents')
   },
   methods: {
     goToStudent(id) {
@@ -72,12 +70,7 @@ export default {
         .$post(endpoints.students.create, {
           email: this.email
         })
-        .then(() => {
-          this.email = ''
-          this.$asyncComputed.students.update()
-          this.clearErrors()
-        })
-        .catch(this.errorHandling)
+        .then(() => (this.email = ''))
     }
   }
 }

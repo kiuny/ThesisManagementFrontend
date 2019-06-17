@@ -64,13 +64,16 @@ export default {
       required: true
     }
   },
-  data() {
-    return {}
-  },
   computed: {
+    professor() {
+      return this.$store.professors.getters.getProfessor(this.id)
+    },
     hasDetails() {
       return !!this.professor.professor_details
     }
+  },
+  created() {
+    this.$store.dispatch('professor/loadProfessor', this.id)
   },
   methods: {
     toggleEvaluator() {
@@ -85,16 +88,6 @@ export default {
     },
     reimportData() {
       return this.$axios.$post(endpoints.professors.reimport(this.id)).then(this.$asyncComputed.professor.update)
-    }
-  },
-  asyncComputed: {
-    professor: {
-      get() {
-        return this.$axios.$get(endpoints.professors.get(this.id))
-      },
-      shouldUpdate() {
-        return !!this.id
-      }
     }
   }
 }
