@@ -1,5 +1,5 @@
 <template>
-  <ExamSession :id="$route.params.id"></ExamSession>
+  <ExamSession :id="$route.params.id" :key="`examSession-card-${$route.params.id}`"></ExamSession>
 </template>
 
 <script>

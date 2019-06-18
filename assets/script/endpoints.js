@@ -21,15 +21,21 @@ export default {
     create: '/students',
     delete: id => `/students/${id}`
   },
+  finalReview: {
+    get: id => `/review/${id}`,
+    delete: id => `/review/${id}`,
+    update: id => `/review/${id}`,
+    download: id => `/review/${id}/download`
+  },
 
   sessions: {
     create: '/sessions',
     index: '/sessions',
-    delete: id => `/sessions/${id}`
+    delete: id => `/sessions/${id}`,
+    get: id => `/sessions/${id}`
   },
 
   gradingScheme: {
-    getCategories: examSession => `/sessions/${examSession}/gradingCategory`,
     save: examSession => `/sessions/${examSession}/gradingCategory/`,
     update: id => `/gradingCategory/${id}`,
     deleteCategory: id => `/gradingCategory/${id}`,
@@ -38,15 +44,15 @@ export default {
   },
 
   papers: {
-    getMine: '/papers/mine',
-    upload: '/papers',
-    download: id => `papers/${id}/download`,
-    getForUser: id => `papers/user/${id}`
+    upload: '/revisions',
+    download: id => `/revisions/${id}/download`,
+    getForUser: id => `/papers/user/${id}`,
+    updateDetails: '/papers'
   },
   comments: {
-    getForPapeer: id => `/papers/${id}/messages`,
-    sendMessage: id => `/papers/${id}/messages`,
-    edit: id => `/comments/${id}`,
+    getForRevision: id => `/revisions/${id}/messages`,
+    sendMessage: id => `/revisions/${id}/messages`,
+    update: id => `/comments/${id}`,
     delete: id => `/comments/${id}`
   }
 }

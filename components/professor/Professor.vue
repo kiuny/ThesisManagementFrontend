@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import endpoints from '../../assets/script/endpoints'
 
 export default {
@@ -65,29 +66,27 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('professors', ['getProfessor']),
     professor() {
-      return this.$store.professors.getters.getProfessor(this.id)
+      return this.getProfessor(this.id)
     },
     hasDetails() {
       return !!this.professor.professor_details
     }
   },
   created() {
-    this.$store.dispatch('professor/loadProfessor', this.id)
+    console.log(this.id)
+    this.$store.dispatch('professors/loadProfessor', this.id)
   },
   methods: {
     toggleEvaluator() {
-      this.$axios
-        .$post(endpoints.professors.toggleEvaluator(this.id))
-        .then(() => this.$asyncComputed.professor.update())
+      this.$axios.$post(endpoints.professors.toggleEvaluator(this.id))
     },
     toggleCoordinator() {
-      this.$axios
-        .$post(endpoints.professors.toggleCoordinator(this.id))
-        .then(() => this.$asyncComputed.professor.update())
+      this.$axios.$post(endpoints.professors.toggleCoordinator(this.id))
     },
     reimportData() {
-      return this.$axios.$post(endpoints.professors.reimport(this.id)).then(this.$asyncComputed.professor.update)
+      return this.$axios.$post(endpoints.professors.reimport(this.id))
     }
   }
 }

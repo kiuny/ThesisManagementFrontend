@@ -1,5 +1,5 @@
 <template>
-  <Professor :id="$route.params.id"></Professor>
+  <Professor :id="$route.params.id" :key="`professor-card-${$route.params.id}`"></Professor>
 </template>
 
 <script>

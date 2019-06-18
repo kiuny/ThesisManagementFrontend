@@ -21,7 +21,7 @@ export default function({ $axios }) {
     },
     reason => {
       extractAuthToken(reason.response.headers)
-      throw reason
+      console.error(reason, reason.response)
     }
   )
 }

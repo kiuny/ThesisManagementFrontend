@@ -25,15 +25,13 @@ export const mutations = {
 export const actions = {
   async loadStudents({ commit }) {
     commit('storeStudents', await this.$axios.$get(endpoints.students.index))
-    this.$echo.private('students').listen('StudentCreated', ({ student }) => {
-      console.log(student)
-      commit('storeStudent', student)
-    })
-    this.$echo.private('students').listen('StudentDeleted', ({ id }) => commit('storeStudent', id))
+    this.$echo
+      .private('students')
+      .listen('StudentUpdated', ({ student }) => commit('storeStudent', student))
+      .listen('StudentDeleted', ({ id }) => commit('storeStudent', id))
   },
 
   async loadStudent({ commit }, id) {
     commit('storeStudent', await this.$axios.$get(endpoints.students.get(id)))
-    this.$echo.private(`students.${id}`).listen('StudentUpdated', ({ student }) => commit('storeStudent', student))
   }
 }

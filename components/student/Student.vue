@@ -2,7 +2,7 @@
   <v-container v-if="student" pt-0>
     <v-card>
       <v-layout pa-3 justify-start :row="$vuetify.breakpoint.smAndUp" :column="$vuetify.breakpoint.xs" align-center>
-        <v-layout column>
+        <v-flex>
           <dl>
             <dt class="caption grey--text">Name</dt>
             <dd>{{ student.name }}</dd>
@@ -14,20 +14,29 @@
               {{ student.activated === '1' ? 'activated' : 'not activated' }}
             </dd>
           </dl>
-        </v-layout>
+          <FinalReviewModal :student="student"></FinalReviewModal>
+        </v-flex>
       </v-layout>
     </v-card>
 
-    <PaperCard v-for="paper in student.papers" :key="paper.id" class="mt-1" :paper="paper"></PaperCard>
+    <template v-if="student.paper">
+      <RevisionCard
+        v-for="revision in student.paper.revisions"
+        :key="revision.id"
+        class="mt-1"
+        :revision="revision"
+      ></RevisionCard>
+    </template>
   </v-container>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import PaperCard from '../PaperCard'
+import RevisionCard from '../RevisionCard'
+import FinalReviewModal from '../FinalReviewModal'
 
 export default {
-  components: { PaperCard },
+  components: { FinalReviewModal, RevisionCard },
   props: {
     id: {
       type: String,

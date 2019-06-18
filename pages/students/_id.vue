@@ -1,5 +1,5 @@
 <template>
-  <Student :id="$route.params.id"></Student>
+  <Student :id="$route.params.id" :key="`student-card-${$route.params.id}`"></Student>
 </template>
 
 <script>

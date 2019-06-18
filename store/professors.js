@@ -24,14 +24,13 @@ export const mutations = {
 export const actions = {
   async loadProfessors({ commit }) {
     commit('storeProfessors', await this.$axios.$get(endpoints.professors.index))
-    this.$echo.private('professors').listen('ProfessorCreated', ({ professor }) => commit('storeProfessor', professor))
-    this.$echo.private('professors').listen('ProfessorDeleted', ({ id }) => commit('deleteProfessor', id))
+    this.$echo
+      .private('professors')
+      .listen('ProfessorUpdated', ({ professor }) => commit('storeProfessor', professor))
+      .listen('ProfessorDeleted', ({ id }) => commit('deleteProfessor', id))
   },
 
   async loadProfessor({ commit }, id) {
     commit('storeProfessor', await this.$axios.$get(endpoints.professors.get(id)))
-    this.$echo
-      .private(`professors.${id}`)
-      .listen('ProfessorUpdated', ({ professor }) => commit('storeProfessor', professor))
   }
 }
