@@ -6,6 +6,8 @@ export default {
   paper: '/paper',
 
   evaluators: '/evaluators',
+  domainsOfInterest: '/interests',
+
   evaluator: id => `/evaluators/${id}`,
 
   professors: '/professors',

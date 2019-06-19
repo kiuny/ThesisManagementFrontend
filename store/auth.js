@@ -1,7 +1,6 @@
 import endpoints from 'assets/script/endpoints'
 
 export const state = () => ({
-  token: '',
   user: {},
   permissions: []
 })
@@ -30,6 +29,7 @@ export const actions = {
   logout({ commit }, fromAll) {
     return this.$axios
       .$post(endpoints.logout, { fromAll })
+      .then(() => localStorage.removeItem('token'))
       .then(() => commit('clearUser'))
       .then(() => this.commit('layout/setDefaultMenuEntries'))
   }

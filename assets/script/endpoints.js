@@ -9,7 +9,7 @@ export default {
     get: id => `/professors/${id}`,
     create: '/professors',
     delete: id => `/professors/${id}`,
-    reimport: id => `/professors/${id}/reimport`,
+    reimport: id => `/professors/${id}/reimport`
   },
 
   students: {
@@ -19,6 +19,13 @@ export default {
     create: '/students',
     delete: id => `/students/${id}`
   },
+
+  domainsOfInterest: {
+    get: id => `/doi/${id}`,
+    create: '/doi',
+    delete: id => `/doi/${id}`
+  },
+
   finalReview: {
     get: id => `/review/${id}`,
     delete: id => `/review/${id}`,
@@ -55,7 +62,7 @@ export default {
   },
   committees: {
     create: examSessionId => `/sessions/${examSessionId}/committee`,
-    update: id => `committee/${id}`,
-    delete: id => `committee/${id}`
+    update: id => `/committee/${id}`,
+    delete: id => `/committee/${id}`
   }
 }

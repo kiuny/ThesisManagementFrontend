@@ -35,6 +35,13 @@ const menuEntries = {
       icon: 'fa-chalkboard-teacher',
       to: paths.evaluators
     }
+  ],
+  'Manage keywords': [
+    {
+      title: 'Domains of interest',
+      icon: 'fa-highlighter',
+      to: paths.domainsOfInterest
+    }
   ]
 }
 

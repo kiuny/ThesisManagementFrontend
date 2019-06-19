@@ -4,24 +4,20 @@ const addAuthToken = config => {
   if (authToken) {
     config.headers.Authorization = authToken
   }
-
-  return config
 }
 
 const extractAuthToken = headers => {
-  localStorage.token = headers.authorization
+  if (headers.authorization) localStorage.token = headers.authorization
 }
 
 export default function({ $axios }) {
-  $axios.interceptors.request.use(addAuthToken)
-  $axios.interceptors.response.use(
-    response => {
-      extractAuthToken(response.headers)
-      return response
-    },
-    reason => {
-      extractAuthToken(reason.response.headers)
-      console.error(reason, reason.response)
-    }
-  )
+  $axios.onRequest(config => {
+    if (config.url.startsWith('/')) addAuthToken(config)
+  })
+  $axios.onResponse(response => {
+    if (response.config.url.startsWith('/')) extractAuthToken(response.headers)
+  })
+  $axios.onResponseError(response => {
+    if (response.config.url.startsWith('/')) extractAuthToken(response.headers)
+  })
 }
