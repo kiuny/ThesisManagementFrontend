@@ -14,7 +14,6 @@ export default {
 
   students: {
     index: '/students',
-    getAll: '/students/all',
     get: id => `/students/${id}`,
     create: '/students',
     delete: id => `/students/${id}`
@@ -37,7 +36,9 @@ export default {
     create: '/sessions',
     index: '/sessions',
     delete: id => `/sessions/${id}`,
-    get: id => `/sessions/${id}`
+    get: id => `/sessions/${id}`,
+    randomAssign: id => `/sessions/${id}/randomOrder`,
+    lexicalAssign: id => `/sessions/${id}/lexicalOrder`
   },
 
   gradingScheme: {

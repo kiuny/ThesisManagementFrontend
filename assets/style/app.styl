@@ -8,3 +8,43 @@
 
 .flex-column
   flex-direction: column !important
+
+html
+  overflow-y: auto
+
+
+.vb > .vb-dragger {
+  z-index: 2;
+  width: 6px;
+  right: 0;
+}
+
+.vb > .vb-dragger > .vb-dragger-styler {
+  backface-visibility: hidden;
+  transition:
+    background-color 100ms ease-out,
+    margin 100ms ease-out,
+    height 100ms ease-out;
+  background-color: rgba(255, 255, 255,.1);
+  border-radius: 10px;
+  height: 100%
+  display: block;
+}
+
+.vb.vb-scrolling-phantom > .vb-dragger > .vb-dragger-styler {
+  background-color: rgba(255, 255,255, .3);
+}
+
+.vb > .vb-dragger:hover > .vb-dragger-styler {
+  background-color: rgba(255, 255, 255,.5);
+}
+
+.vb.vb-dragging > .vb-dragger > .vb-dragger-styler {
+  background-color: rgba(255, 255, 255,.5);
+  margin: 0;
+  height: 100%;
+}
+
+.vb.vb-dragging-phantom > .vb-dragger > .vb-dragger-styler {
+  background-color: rgba(255, 255, 255,.5);
+}

@@ -11,7 +11,7 @@ export const getters = {
 
 export const mutations = {
   storeStudents(state, students) {
-    state.students = students
+    Vue.set(state, 'students', students)
   },
   storeStudent(state, student) {
     Vue.set(state.students, student.id, student)

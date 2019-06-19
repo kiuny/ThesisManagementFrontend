@@ -17,7 +17,9 @@ export default function({ $axios }) {
   $axios.onResponse(response => {
     if (response.config.url.startsWith('/')) extractAuthToken(response.headers)
   })
-  $axios.onResponseError(response => {
+  $axios.onResponseError(({ response }) => {
     if (response.config.url.startsWith('/')) extractAuthToken(response.headers)
+    console.error(response.data)
+    return true
   })
 }

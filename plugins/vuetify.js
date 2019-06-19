@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Vuetify, { VChip } from 'vuetify/lib'
+import Vuebar from 'vuebar'
 import '@fortawesome/fontawesome-free/css/all.min.css'
+
+Vue.use(Vuebar)
 
 Vue.use(Vuetify, {
   components: {

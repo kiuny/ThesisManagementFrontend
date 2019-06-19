@@ -8,6 +8,13 @@
         <span class="display-2">Final review for {{ student.name }}</span>
       </v-card-title>
       <v-layout column>
+        <span class="title">Sesiune examene</span>
+        <v-select
+          v-model="finalReview.exam_session_id"
+          :items="examSessions"
+          item-text="name"
+          item-value="id"
+        ></v-select>
         <span class="title">Evaluare generală</span>
         <v-radio-group v-model="finalReview.overall" row>
           <v-radio label="Satisfăcător" value="1"></v-radio>
@@ -161,6 +168,7 @@ export default {
     return {
       open: false,
       finalReview: {
+        exam_session_id: null,
         overall: null,
         grade_recommendation: null,
         structure: null,
@@ -176,10 +184,18 @@ export default {
       }
     }
   },
+  computed: {
+    examSessions() {
+      return Object.values(this.$store.state.examSessions.examSessions)
+    }
+  },
   watch: {
     async open() {
       this.finalReview = (await this.$axios.$get(endpoints.finalReview.get(this.student.id))) || this.finalReview
     }
+  },
+  created() {
+    this.$store.dispatch('examSessions/loadExamSessions')
   },
   methods: {
     async save() {
