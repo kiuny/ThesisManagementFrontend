@@ -30,22 +30,7 @@
 
     <v-card class="mt-3">
       <v-layout pa-2 :row="$vuetify.breakpoint.smAndUp" :column="$vuetify.breakpoint.xs" justify-center>
-        <v-flex mx-1 shrink align-self-center>
-          <v-checkbox
-            :input-value="professor.isEvaluator"
-            label="Evaluator"
-            color="primary"
-            @click="toggleEvaluator"
-          ></v-checkbox>
-        </v-flex>
-        <v-flex mx-1 shrink align-self-center>
-          <v-checkbox
-            :input-value="professor.isCoordinator"
-            label="Coordinator"
-            color="primary"
-            @click="toggleCoordinator"
-          ></v-checkbox>
-        </v-flex>
+        <v-spacer></v-spacer>
         <v-flex mx-1 shrink align-self-center>
           <v-btn @click="reimportData">Reimport details</v-btn>
         </v-flex>
@@ -78,12 +63,6 @@ export default {
     this.$store.dispatch('professors/loadProfessor', this.id)
   },
   methods: {
-    toggleEvaluator() {
-      this.$axios.$post(endpoints.professors.toggleEvaluator(this.id))
-    },
-    toggleCoordinator() {
-      this.$axios.$post(endpoints.professors.toggleCoordinator(this.id))
-    },
     reimportData() {
       return this.$axios.$post(endpoints.professors.reimport(this.id))
     }

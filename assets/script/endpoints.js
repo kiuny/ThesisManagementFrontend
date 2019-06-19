@@ -10,8 +10,6 @@ export default {
     create: '/professors',
     delete: id => `/professors/${id}`,
     reimport: id => `/professors/${id}/reimport`,
-    toggleCoordinator: id => `/professors/${id}/toggle/coordinator`,
-    toggleEvaluator: id => `/professors/${id}/toggle/evaluator`
   },
 
   students: {
