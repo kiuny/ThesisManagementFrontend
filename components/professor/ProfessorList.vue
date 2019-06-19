@@ -7,6 +7,7 @@
       label="Add new professor by email"
       single-line
       append-outer-icon="fa-plus"
+      @keypress.enter="addProfessor"
       @click:append-outer="addProfessor"
     >
     </v-text-field>

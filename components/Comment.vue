@@ -60,15 +60,11 @@ export default {
     }
   },
   created() {
-    console.log(`CommentUpdated.${this.comment.id}`, `chat.${this.comment.paper_revision_id}`)
-    console.log(
-      this.$echo
-        .private(`chat.${this.comment.paper_revision_id}`)
-        .listen(`CommentUpdated.${this.comment.id}`, ({ comment }) => {
-          console.log(comment)
-          this.comment.message = comment.message
-        })
-    )
+    this.$echo
+      .private(`chat.${this.comment.paper_revision_id}`)
+      .listen(`CommentUpdated.${this.comment.id}`, ({ comment }) => {
+        this.comment.message = comment.message
+      })
   },
   methods: {
     startEdit() {

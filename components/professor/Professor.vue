@@ -75,7 +75,6 @@ export default {
     }
   },
   created() {
-    console.log(this.id)
     this.$store.dispatch('professors/loadProfessor', this.id)
   },
   methods: {

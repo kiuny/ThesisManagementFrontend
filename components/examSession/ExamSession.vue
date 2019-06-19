@@ -7,7 +7,10 @@
     </v-layout>
     <v-layout mt-3>
       <v-flex>
-        <CommitteeOrganizer v-if="examSession" :exam-session="examSession"></CommitteeOrganizer>
+        <CommitteeOrganizer
+          v-if="examSession && examSession.committees"
+          :exam-session="examSession"
+        ></CommitteeOrganizer>
       </v-flex>
     </v-layout>
   </v-container>

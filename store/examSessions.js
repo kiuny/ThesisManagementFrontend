@@ -24,12 +24,10 @@ export const mutations = {
 export const actions = {
   async loadExamSessions({ commit }) {
     commit('storeExamSessions', await this.$axios.$get(endpoints.sessions.index))
-    console.log(
-      this.$echo
-        .private('examSessions')
-        .listen('ExamSessionUpdated', ({ examSession }) => commit('storeExamSession', examSession))
-        .listen('ExamSessionDeleted', ({ name }) => commit('deleteExamSession', name))
-    )
+    this.$echo
+      .private('examSessions')
+      .listen('ExamSessionUpdated', ({ examSession }) => commit('storeExamSession', examSession))
+      .listen('ExamSessionDeleted', ({ name }) => commit('deleteExamSession', name))
   },
 
   async loadExamSession({ commit }, id) {

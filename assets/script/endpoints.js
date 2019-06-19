@@ -54,5 +54,10 @@ export default {
     sendMessage: id => `/revisions/${id}/messages`,
     update: id => `/comments/${id}`,
     delete: id => `/comments/${id}`
+  },
+  committees: {
+    create: examSessionId => `/sessions/${examSessionId}/committee`,
+    update: id => `committee/${id}`,
+    delete: id => `committee/${id}`
   }
 }

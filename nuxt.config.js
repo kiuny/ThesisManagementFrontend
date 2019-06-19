@@ -42,7 +42,8 @@ export default {
     '@/plugins/initializeAuth',
     '@/plugins/notifications',
     '@/plugins/AsyncComputed',
-    '@/plugins/echo'
+    '@/plugins/echo',
+    '@/plugins/dragNDrop'
   ],
 
   /*

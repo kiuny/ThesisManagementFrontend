@@ -1,8 +1,11 @@
 import Vue from 'vue'
-import Vuetify from 'vuetify/lib'
+import Vuetify, { VChip } from 'vuetify/lib'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 
 Vue.use(Vuetify, {
+  components: {
+    VChip
+  },
   theme: {
     primary: '#9c27b0',
     secondary: '#009688',
