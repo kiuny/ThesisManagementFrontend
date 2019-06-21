@@ -79,15 +79,15 @@
             </v-flex>
             <v-divider inset vertical></v-divider>
             <v-flex
-              v-if="committee.assigned_students && committee.assigned_students.length > 0"
+              v-if="committee.assigned_papers && committee.assigned_papers.length > 0"
               class="committee-card"
               shrink
             >
               <div v-bar class="full-height">
                 <v-list class="student-list">
-                  <v-list-tile v-for="student in committee.assigned_students" :key="`student-${student.id}`">
+                  <v-list-tile v-for="paper in committee.assigned_papers" :key="`student-${paper.student.id}`">
                     <v-list-tile-content>
-                      {{ student.name }}
+                      {{ paper.student.name }}
                     </v-list-tile-content>
                   </v-list-tile>
                 </v-list>
@@ -101,16 +101,10 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import filter from 'lodash/filter'
-import endpoints from '../assets/script/endpoints'
+
 export default {
-  props: {
-    examSession: {
-      type: Object,
-      required: true
-    }
-  },
   data() {
     return {
       committees: []
@@ -118,8 +112,6 @@ export default {
   },
   computed: {
     ...mapState('professors', ['professors']),
-    ...mapGetters('professors', ['getProfessor']),
-
     usedProfessorsIds() {
       return new Set(
         this.committees
@@ -134,20 +126,16 @@ export default {
       })
     }
   },
-  watch: {
-    examSession: {
-      handler() {
-        this.committees = this.examSession.committees.map(comm => ({ ...comm }))
-      },
-      immediate: true
-    }
-  },
   created() {
     this.$store.dispatch('professors/loadProfessors')
+    this.loadCommittees()
   },
   methods: {
+    async loadCommittees() {
+      this.committees = await this.$axios.$get(this.$endpoint.committees.get())
+    },
     saveCommittee(committee) {
-      return this.$axios.$post(endpoints.committees.update(committee.id), {
+      return this.$axios.$post(this.$endpoint.committees.update(committee.id), {
         leader_id: committee.leader ? committee.leader.id : null,
         member1_id: committee.members.length > 0 ? committee.members[0].id : null,
         member2_id: committee.members.length > 1 ? committee.members[1].id : null,
@@ -155,7 +143,7 @@ export default {
       })
     },
     async newCommittee() {
-      const comm = await this.$axios.$post(endpoints.committees.create(this.examSession.name))
+      const comm = await this.$axios.$post(this.$endpoint.committees.create())
 
       this.committees.push({
         id: comm.id,
@@ -192,19 +180,15 @@ export default {
       this.saveCommittee(committee)
     },
     deleteCommittee(committee) {
-      this.$axios.$delete(endpoints.committees.delete(committee.id))
+      this.$axios.$delete(this.$endpoint.committees.delete(committee.id))
 
       this.committees = filter(this.committees, comm => comm.id !== committee.id)
     },
     randomAssign() {
-      return this.$axios
-        .$post(endpoints.sessions.randomAssign(this.examSession.name))
-        .then(() => this.$store.dispatch('examSessions/loadExamSession', this.examSession.name))
+      return this.$axios.$post(this.$endpoint.committees.randomAssign()).then(this.loadCommittees)
     },
     lexicalAssign() {
-      return this.$axios
-        .$post(endpoints.sessions.lexicalAssign(this.examSession.name))
-        .then(() => this.$store.dispatch('examSessions/loadExamSession', this.examSession.name))
+      return this.$axios.$post(this.$endpoint.committees.lexicalAssign()).then(this.loadCommittees)
     }
   }
 }

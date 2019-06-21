@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import endpoints from '../assets/script/endpoints'
 
 export const state = () => ({
   professors: {}
@@ -23,7 +22,7 @@ export const mutations = {
 
 export const actions = {
   async loadProfessors({ commit }) {
-    commit('storeProfessors', await this.$axios.$get(endpoints.professors.index))
+    commit('storeProfessors', await this.$axios.$get(this.$endpoint.professors.list))
     this.$echo
       .private('professors')
       .listen('ProfessorUpdated', ({ professor }) => commit('storeProfessor', professor))
@@ -31,6 +30,6 @@ export const actions = {
   },
 
   async loadProfessor({ commit }, id) {
-    commit('storeProfessor', await this.$axios.$get(endpoints.professors.get(id)))
+    commit('storeProfessor', await this.$axios.$get(this.$endpoint.professors.get(id)))
   }
 }

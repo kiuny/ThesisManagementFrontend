@@ -37,7 +37,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import endpoints from '../assets/script/endpoints'
 
 export default {
   props: {
@@ -77,13 +76,13 @@ export default {
     },
     async updateMessage() {
       this.editing = false
-      await this.$axios.$post(endpoints.comments.update(this.comment.id), {
+      await this.$axios.$post(this.$endpoint.comments.update(this.comment.id), {
         message: this.comment.message
       })
     },
     async deleteMessage() {
       this.deleting = true
-      await this.$axios.$delete(endpoints.comments.delete(this.comment.id))
+      await this.$axios.$delete(this.$endpoint.comments.delete(this.comment.id))
     }
   }
 }

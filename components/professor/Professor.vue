@@ -30,9 +30,12 @@
 
     <v-card class="mt-3">
       <v-layout pa-2 :row="$vuetify.breakpoint.smAndUp" :column="$vuetify.breakpoint.xs" justify-center>
-        <v-spacer></v-spacer>
         <v-flex mx-1 shrink align-self-center>
           <v-btn @click="reimportData">Reimport details</v-btn>
+        </v-flex>
+        <v-spacer></v-spacer>
+        <v-flex shrink>
+          <v-btn icon @click="deleteProfessor"><v-icon color="error">fa-trash</v-icon></v-btn>
         </v-flex>
       </v-layout>
     </v-card>
@@ -41,8 +44,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import endpoints from '../../assets/script/endpoints'
-
+import route from '../../assets/script/paths'
 export default {
   props: {
     id: {
@@ -64,7 +66,17 @@ export default {
   },
   methods: {
     reimportData() {
-      return this.$axios.$post(endpoints.professors.reimport(this.id))
+      return this.$axios.$post(this.$endpoint.professors.reimport(this.id))
+    },
+    deleteProfessor() {
+      this.$axios
+        .$delete(this.$endpoint.professors.delete(this.id))
+        .then(() => {
+          return this.$store.dispatch('professors/loadProfessors')
+        })
+        .then(() => {
+          this.$router.push(route.professors)
+        })
     }
   }
 }

@@ -4,17 +4,7 @@
       <v-btn v-bind="$attrs" v-on="on">Leave final review</v-btn>
     </template>
     <v-card class="pa-5">
-      <v-card-title>
-        <span class="display-2">Final review for {{ student.name }}</span>
-      </v-card-title>
       <v-layout column>
-        <span class="title">Sesiune examene</span>
-        <v-select
-          v-model="finalReview.exam_session_id"
-          :items="examSessions"
-          item-text="name"
-          item-value="id"
-        ></v-select>
         <span class="title">Evaluare generală</span>
         <v-radio-group v-model="finalReview.overall" row>
           <v-radio label="Satisfăcător" value="1"></v-radio>
@@ -155,11 +145,9 @@
 </template>
 
 <script>
-import endpoints from '../assets/script/endpoints'
-
 export default {
   props: {
-    student: {
+    paper: {
       type: Object,
       required: true
     }
@@ -168,7 +156,6 @@ export default {
     return {
       open: false,
       finalReview: {
-        exam_session_id: null,
         overall: null,
         grade_recommendation: null,
         structure: null,
@@ -184,38 +171,30 @@ export default {
       }
     }
   },
-  computed: {
-    examSessions() {
-      return Object.values(this.$store.state.examSessions.examSessions)
-    }
-  },
   watch: {
     async open() {
-      this.finalReview = (await this.$axios.$get(endpoints.finalReview.get(this.student.id))) || this.finalReview
+      this.finalReview = (await this.$axios.$get(this.$endpoint.finalReview.get(this.paper.id))) || this.finalReview
     }
-  },
-  created() {
-    this.$store.dispatch('examSessions/loadExamSessions')
   },
   methods: {
     async save() {
-      await this.$axios.$post(endpoints.finalReview.update(this.student.id), this.finalReview)
+      await this.$axios.$post(this.$endpoint.finalReview.update(this.paper.id), this.finalReview)
     },
     async download() {
       if (!this.finalReview.id) {
         return
       }
-      const data = await this.$axios.$get(endpoints.finalReview.download(this.student.id), {
+      const data = await this.$axios.$get(this.$endpoint.finalReview.download(this.paper.id), {
         responseType: 'blob'
       })
       const downloadUrl = window.URL.createObjectURL(new Blob([data]))
       const link = document.createElement('a')
       link.href = downloadUrl
-      link.setAttribute('download', `${this.student.name}-Review.pdf`)
+      link.setAttribute('download', `${this.paper.name}-Review.pdf`)
       link.click()
     },
     async deleteReview() {
-      await this.$axios.$delete(endpoints.finalReview.delete(this.student.id))
+      await this.$axios.$delete(this.$endpoint.finalReview.delete(this.paper.id))
       for (const key in this.finalReview) {
         this.$set(this.finalReview, key, null)
       }

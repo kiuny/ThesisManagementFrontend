@@ -18,11 +18,11 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <div v-if="!examSession.grading_categories" class="text-xs-center">
+    <div v-if="!gradingCategories" class="text-xs-center">
       <v-progress-circular indeterminate></v-progress-circular>
     </div>
     <v-list v-else>
-      <template v-for="(category, idx) in examSession.grading_categories">
+      <template v-for="(category, idx) in gradingCategories">
         <v-hover :key="category.id">
           <v-list-tile slot-scope="{ hover }">
             <v-list-tile-avatar>{{ category.points }}</v-list-tile-avatar>
@@ -35,8 +35,8 @@
               <v-btn icon @click="startEditCategory(category)"><v-icon color="secondary">fa-pencil-alt</v-icon></v-btn>
               <v-btn icon @click="deleteCategory(category.id)"><v-icon color="red">fa-trash</v-icon></v-btn>
               <UpDownButton
-                @down="incrementOrder(examSession.grading_categories, idx)"
-                @up="decrementOrder(examSession.grading_categories, idx)"
+                @down="incrementOrder(gradingCategories, idx)"
+                @up="decrementOrder(gradingCategories, idx)"
               ></UpDownButton>
             </v-list-tile-action>
           </v-list-tile>
@@ -74,18 +74,11 @@
 </template>
 
 <script>
-import endpoints from '../assets/script/endpoints'
 import UpDownButton from './UpDownButton'
 
 export default {
   components: {
     UpDownButton
-  },
-  props: {
-    examSession: {
-      type: Object,
-      required: true
-    }
   },
   data() {
     return {
@@ -93,7 +86,8 @@ export default {
       addingCategory: false,
       categoryModel: {},
       targetForCategory: null,
-      saveAction: null
+      saveAction: null,
+      gradingCategories: []
     }
   },
   computed: {
@@ -101,10 +95,16 @@ export default {
       return this.categories.map(cat => cat.points).reduce((acc, current) => acc + current, 0)
     }
   },
+  mounted() {
+    this.loadGradingCategories()
+  },
   created() {
     this.resetAddCategory()
   },
   methods: {
+    async loadGradingCategories() {
+      this.gradingCategories = await this.$axios.$get(this.$endpoint.gradingScheme.get())
+    },
     startAddRootCategoryModal() {
       this.saveAction = this.addCategory
       this.addingCategory = true
@@ -121,13 +121,15 @@ export default {
     },
     addCategory() {
       return this.$axios
-        .$post(endpoints.gradingScheme.save(this.examSession.name), this.categoryModel)
-        .then(() => this.resetAddCategory())
+        .$post(this.$endpoint.gradingScheme.save(), this.categoryModel)
+        .then(this.loadGradingCategories)
+        .then(this.resetAddCategory)
     },
     updateCategory() {
       return this.$axios
-        .$post(endpoints.gradingScheme.update(this.categoryModel.id), this.categoryModel)
-        .then(() => this.resetAddCategory())
+        .$post(this.$endpoint.gradingScheme.update(this.categoryModel.id), this.categoryModel)
+        .then(this.loadGradingCategories)
+        .then(this.resetAddCategory)
     },
     resetAddCategory() {
       this.addingCategory = false
@@ -141,7 +143,7 @@ export default {
       this.saveAction = () => {}
     },
     deleteCategory(id) {
-      return this.$axios.$delete(endpoints.gradingScheme.deleteCategory(id))
+      return this.$axios.$delete(this.$endpoint.gradingScheme.deleteCategory(id)).then(this.loadGradingCategories)
     },
     incrementOrder(categories, index) {
       if (index + 1 === categories.length) {
@@ -151,7 +153,7 @@ export default {
       // eslint-disable-next-line
       categories[index] = [categories[index + 1], (categories[index + 1] = categories[index])][0]
 
-      return this.$axios.post(endpoints.gradingScheme.increment(categoryId))
+      return this.$axios.post(this.$endpoint.gradingScheme.increment(categoryId)).then(this.loadGradingCategories)
     },
     decrementOrder(categories, index) {
       if (index === 0) {
@@ -161,7 +163,7 @@ export default {
       // eslint-disable-next-line
       categories[index] = [categories[index - 1], (categories[index - 1] = categories[index])][0]
 
-      return this.$axios.post(endpoints.gradingScheme.decrement(categoryId))
+      return this.$axios.post(this.$endpoint.gradingScheme.decrement(categoryId)).then(this.loadGradingCategories)
     }
   }
 }

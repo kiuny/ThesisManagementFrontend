@@ -22,7 +22,7 @@
       <template v-for="professor in professors">
         <v-divider :key="`divider-${professor.id}`"></v-divider>
 
-        <v-list-tile :key="`tile-${professor.id}`" @click="goToProfessor(professor.id)">
+        <v-list-tile :key="`tile-${professor.id}`" :to="goToProfessor(professor.id)">
           <v-list-tile-content v-text="professor.name"></v-list-tile-content>
           <v-list-tile-action>
             <v-icon>fa-chevron-right</v-icon>
@@ -40,7 +40,6 @@
 <script>
 import { mapState } from 'vuex'
 import filter from 'lodash/filter'
-import endpoints from '../../assets/script/endpoints'
 import paths from '../../assets/script/paths'
 
 export default {
@@ -61,11 +60,11 @@ export default {
   },
   methods: {
     goToProfessor(id) {
-      this.$router.push(paths.professor(id))
+      return paths.professor(id)
     },
     addProfessor() {
       this.$axios
-        .$post(endpoints.professors.create, {
+        .$post(this.$endpoint.professors.create, {
           email: this.email
         })
         .then(() => (this.email = ''))

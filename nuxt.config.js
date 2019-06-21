@@ -5,7 +5,7 @@ export default {
   mode: 'spa',
 
   /*
-   ** Headers of the page
+   ** Headers of the paPge
    */
   head: {
     title: 'Thesis manager',
@@ -37,13 +37,11 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '@/plugins/vuetify',
-    '@/plugins/axios',
-    '@/plugins/initializeAuth',
-    '@/plugins/notifications',
-    '@/plugins/AsyncComputed',
     '@/plugins/echo',
-    '@/plugins/dragNDrop'
+    '@/plugins/axios',
+    '@/plugins/endpointResolver',
+    '@/plugins/initializeAuth',
+    '@/plugins/VueExtensions'
   ],
 
   /*
@@ -55,8 +53,7 @@ export default {
    */
   axios: {
     prefix: '/api',
-    proxy: true,
-
+    proxy: true
   },
 
   proxy: {

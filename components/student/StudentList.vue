@@ -1,11 +1,9 @@
 <template>
   <v-card class="px-3 py-2">
     <v-text-field
-      ref="email"
       v-model="email"
       color="primary"
       label="Add new student by email"
-      :error-messages="errors.email"
       single-line
       append-outer-icon="fa-plus"
       @click:append-outer="addStudent"
@@ -22,7 +20,7 @@
       <template v-for="student in filteredStudents">
         <v-divider :key="`divider-${student.id}`"></v-divider>
 
-        <v-list-tile :key="`tile-${student.id}`" @click="goToStudent(student.id)">
+        <v-list-tile :key="`tile-${student.id}`" :to="goToStudent(student.id)">
           <v-list-tile-content v-text="student.name"></v-list-tile-content>
           <v-list-tile-action>
             <v-icon>fa-chevron-right</v-icon>
@@ -40,12 +38,9 @@
 <script>
 import { mapState } from 'vuex'
 import filter from 'lodash/filter'
-import endpoints from '../../assets/script/endpoints'
 import paths from '../../assets/script/paths'
-import errorHandlingMixin from '../errorHandlingMixin'
 
 export default {
-  mixins: [errorHandlingMixin],
   data() {
     return {
       email: '',
@@ -63,13 +58,14 @@ export default {
   },
   methods: {
     goToStudent(id) {
-      this.$router.push(paths.student(id))
+      return paths.student(id)
     },
     addStudent() {
       this.$axios
-        .$post(endpoints.students.create, {
+        .$post(this.$endpoint.students.create, {
           email: this.email
         })
+        .then(() => this.$store.dispatch('students/loadStudents'))
         .then(() => (this.email = ''))
     }
   }

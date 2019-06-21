@@ -1,5 +1,3 @@
-import endpoints from 'assets/script/endpoints'
-
 export const state = () => ({
   user: {},
   permissions: []
@@ -18,17 +16,17 @@ export const mutations = {
 
 export const actions = {
   login({ commit, dispatch }, credentials) {
-    return this.$axios.$post(endpoints.login, credentials).then(() => dispatch('getUser'))
+    return this.$axios.$post(this.$endpoint.login, credentials).then(() => dispatch('getUser'))
   },
   getUser({ commit, state }) {
     return this.$axios
-      .$get(endpoints.user)
+      .$get(this.$endpoint.user)
       .then(userWithPermissions => commit('storeUser', userWithPermissions))
       .then(() => this.commit('layout/setMenuEntriesFor', state.permissions))
   },
   logout({ commit }, fromAll) {
     return this.$axios
-      .$post(endpoints.logout, { fromAll })
+      .$post(this.$endpoint.logout, { fromAll })
       .then(() => localStorage.removeItem('token'))
       .then(() => commit('clearUser'))
       .then(() => this.commit('layout/setDefaultMenuEntries'))

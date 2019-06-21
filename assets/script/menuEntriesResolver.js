@@ -42,6 +42,30 @@ const menuEntries = {
       icon: 'fa-highlighter',
       to: paths.domainsOfInterest
     }
+  ],
+
+  'Manage committees': [
+    {
+      title: 'Committees',
+      icon: 'fa-angry',
+      to: paths.manageCommittees
+    }
+  ],
+
+  'Manage grading schemes': [
+    {
+      title: 'Grading scheme',
+      icon: 'fa-angry',
+      to: paths.manageGradingScheme
+    }
+  ],
+
+  Grade: [
+    {
+      title: 'Presentation day',
+      icon: 'fa-tv',
+      to: paths.liveGrading
+    }
   ]
 }
 

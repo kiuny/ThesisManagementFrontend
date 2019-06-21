@@ -1,69 +1,90 @@
-export default {
-  login: '/auth/login',
-  logout: '/auth/logout',
-  user: '/user/me',
-  register: '/auth/register',
+export default class {
+  constructor(examSessionResolver) {
+    this.examSessionResolver = examSessionResolver
+  }
 
-  professors: {
-    index: '/professors',
+  get examSession() {
+    return this.examSessionResolver()
+  }
+
+  user = '/user/me'
+
+  login = '/auth/login'
+  logout = '/auth/logout'
+  register = '/auth/register'
+
+  professors = {
+    list: '/professors',
     get: id => `/professors/${id}`,
     create: '/professors',
     delete: id => `/professors/${id}`,
-    reimport: id => `/professors/${id}/reimport`
-  },
 
-  students: {
+    reimport: id => `/professors/${id}/reimport`
+  }
+
+  students = {
     index: '/students',
     get: id => `/students/${id}`,
     create: '/students',
     delete: id => `/students/${id}`
-  },
+  }
 
-  domainsOfInterest: {
+  domainsOfInterest = {
     get: id => `/doi/${id}`,
     create: '/doi',
     delete: id => `/doi/${id}`
-  },
+  }
 
-  finalReview: {
-    get: id => `/review/${id}`,
-    delete: id => `/review/${id}`,
-    update: id => `/review/${id}`,
-    download: id => `/review/${id}/download`
-  },
+  finalReview = {
+    get: paperId => `/review/${paperId}`,
+    delete: paperId => `/review/${paperId}`,
+    update: paperId => `/review/${paperId}`,
+    download: paperId => `/review/${paperId}/download`
+  }
 
-  sessions: {
+  sessions = {
     create: '/sessions',
-    index: '/sessions',
-    delete: id => `/sessions/${id}`,
-    get: id => `/sessions/${id}`,
-    randomAssign: id => `/sessions/${id}/randomOrder`,
-    lexicalAssign: id => `/sessions/${id}/lexicalOrder`
-  },
+    list: '/sessions',
+    delete: sessionId => `/sessions/${sessionId}`
+  }
 
-  gradingScheme: {
-    save: examSession => `/sessions/${examSession}/gradingCategory/`,
-    update: id => `/gradingCategory/${id}`,
-    deleteCategory: id => `/gradingCategory/${id}`,
-    increment: id => `/gradingCategory/${id}/increment`,
-    decrement: id => `/gradingCategory/${id}/decrement`
-  },
+  gradingScheme = {
+    get: () => `/sessions/${this.examSession}/gradingCategory/`,
+    save: () => `/sessions/${this.examSession}/gradingCategory/`,
+    update: gradingCategoryId => `/gradingCategory/${gradingCategoryId}`,
+    deleteCategory: gradingCategoryId => `/gradingCategory/${gradingCategoryId}`,
 
-  papers: {
-    upload: '/revisions',
-    download: id => `/revisions/${id}/download`,
-    getForUser: id => `/papers/user/${id}`,
-    updateDetails: '/papers'
-  },
-  comments: {
-    getForRevision: id => `/revisions/${id}/messages`,
-    sendMessage: id => `/revisions/${id}/messages`,
-    update: id => `/comments/${id}`,
-    delete: id => `/comments/${id}`
-  },
-  committees: {
-    create: examSessionId => `/sessions/${examSessionId}/committee`,
-    update: id => `/committee/${id}`,
-    delete: id => `/committee/${id}`
+    increment: gradingCategoryId => `/gradingCategory/${gradingCategoryId}/increment`,
+    decrement: gradingCategoryId => `/gradingCategory/${gradingCategoryId}/decrement`
+  }
+  papers = {
+    upload: paperId => `/revisions/${paperId}`,
+    download: revisionId => `/revisions/${revisionId}/download`,
+
+    getForStudent: studentId => `/papers/${this.examSession}/user/${studentId}`,
+    updateDetails: () => `/papers/${this.examSession}`
+  }
+  comments = {
+    getForRevision: revisionId => `/revisions/${revisionId}/messages`,
+    sendMessage: revisionId => `/revisions/${revisionId}/messages`,
+    update: commentId => `/comments/${commentId}`,
+    delete: commentId => `/comments/${commentId}`
+  }
+
+  committees = {
+    create: () => `/sessions/${this.examSession}/committee`,
+    get: () => `/sessions/${this.examSession}/committee`,
+    update: committeeId => `/committee/${committeeId}`,
+    delete: committeeId => `/committee/${committeeId}`,
+    randomAssign: () => `/sessions/${this.examSession}/randomOrder`,
+    lexicalAssign: () => `/sessions/${this.examSession}/lexicalOrder`
+  }
+
+  liveGrading = {
+    list: () => `/liveGrading/${this.examSession}/papers`,
+    committee: () => `/liveGrading/${this.examSession}/committee`,
+    paperData: paperId => `/liveGrading/papers/${paperId}`,
+    grades: paperId => `/liveGrading/papers/${paperId}/grades`,
+    setGrade: (paperId, categoryId) => `/liveGrading/papers/${paperId}/grades/${categoryId}`
   }
 }

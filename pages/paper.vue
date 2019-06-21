@@ -62,7 +62,6 @@
 <script>
 import { mapState } from 'vuex'
 import UploadButton from '../components/UploadButton'
-import endpoints from '../assets/script/endpoints'
 import PaperCard from '../components/RevisionCard'
 
 export default {
@@ -91,7 +90,7 @@ export default {
       formData.append('paper', this.uploadForm.paperFile)
       formData.append('name', this.uploadForm.name)
 
-      const revision = await this.$axios.$post(endpoints.papers.upload, formData)
+      const revision = await this.$axios.$post(this.$endpoint.papers.upload(this.paper.id), formData)
       this.paper.revisions.push(revision)
 
       this.uploadForm.name = ''
@@ -108,14 +107,14 @@ export default {
       this.editing = true
     },
     async updatePaper() {
-      await this.$axios.$post(endpoints.papers.updateDetails, {
+      await this.$axios.$post(this.$endpoint.papers.updateDetails(), {
         name: this.paper.name,
         link: this.paper.link
       })
       this.editing = false
     },
     async loadPaper() {
-      this.paper = await this.$axios.$get(endpoints.papers.getForUser(this.user.id))
+      this.paper = await this.$axios.$get(this.$endpoint.papers.getForStudent(this.user.id))
     }
   }
 }

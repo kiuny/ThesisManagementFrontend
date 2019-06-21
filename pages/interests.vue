@@ -40,7 +40,6 @@
 <script>
 import { mapState } from 'vuex'
 import debounce from 'debounce-promise'
-import endpoints from '../assets/script/endpoints'
 
 export default {
   data() {
@@ -55,7 +54,7 @@ export default {
       return this.searchWiki()
     },
     interests() {
-      return this.$axios.$get(endpoints.domainsOfInterest.get(this.user.id))
+      return this.$axios.$get(this.$endpoint.domainsOfInterest.get(this.user.id))
     }
   },
   computed: {
@@ -73,11 +72,13 @@ export default {
     addDomain(name) {
       this.interestModel = ''
       if (!name) return
-      return this.$axios.$post(endpoints.domainsOfInterest.create, { name }).then(this.$asyncComputed.interests.update)
+      return this.$axios
+        .$post(this.$endpoint.domainsOfInterest.create, { name })
+        .then(this.$asyncComputed.interests.update)
     },
     removeDomain(interest) {
       this.interests = this.interests.filter(int => int.id !== interest.id)
-      this.$axios.$delete(endpoints.domainsOfInterest.delete(interest.id))
+      this.$axios.$delete(this.$endpoint.domainsOfInterest.delete(interest.id))
     }
   }
 }

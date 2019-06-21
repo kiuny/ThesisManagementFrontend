@@ -18,7 +18,7 @@
                 rows="1"
                 clearable
                 label="Send a message"
-                @keypress.enter.exact="sendMessage"
+                @keypress.enter.exact.prevent="sendMessage"
               ></v-textarea>
             </v-flex>
             <v-flex class="shrink">
@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import endpoints from '../assets/script/endpoints'
 import Comment from './Comment'
 
 export default {
@@ -61,7 +60,7 @@ export default {
   methods: {
     downloadPaper() {
       return this.$axios
-        .$get(endpoints.papers.download(this.revision.id), {
+        .$get(this.$endpoint.papers.download(this.revision.id), {
           responseType: 'blob'
         })
         .then(data => {
@@ -74,12 +73,12 @@ export default {
     },
     async sendMessage() {
       this.comments.push(
-        await this.$axios.$post(endpoints.comments.sendMessage(this.revision.id), { message: this.message })
+        await this.$axios.$post(this.$endpoint.comments.sendMessage(this.revision.id), { message: this.message })
       )
       this.message = ''
     },
     async loadChat() {
-      this.comments = await this.$axios.$get(endpoints.comments.getForRevision(this.revision.id))
+      this.comments = await this.$axios.$get(this.$endpoint.comments.getForRevision(this.revision.id))
 
       this.$echo
         .private(`chat.${this.revision.id}`)

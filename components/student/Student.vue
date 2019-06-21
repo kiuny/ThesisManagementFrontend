@@ -14,14 +14,14 @@
               {{ student.activated === '1' ? 'activated' : 'not activated' }}
             </dd>
           </dl>
-          <FinalReviewModal :student="student"></FinalReviewModal>
+          <FinalReviewModal v-if="paper" :paper="paper"></FinalReviewModal>
         </v-flex>
       </v-layout>
     </v-card>
 
-    <template v-if="student.paper">
+    <template v-if="paper">
       <RevisionCard
-        v-for="revision in student.paper.revisions"
+        v-for="revision in paper.revisions"
         :key="revision.id"
         class="mt-1"
         :revision="revision"
@@ -47,6 +47,11 @@ export default {
     ...mapGetters('students', ['getStudent']),
     student() {
       return this.getStudent(this.id)
+    }
+  },
+  asyncComputed: {
+    paper() {
+      return this.$axios.$get(this.$endpoint.papers.getForStudent(this.id))
     }
   },
   created() {

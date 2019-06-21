@@ -7,6 +7,11 @@ export default {
 
   evaluators: '/evaluators',
   domainsOfInterest: '/interests',
+  liveGrading: '/liveGrading',
+  liveGradingPaper: id => `/liveGrading/${id}`,
+
+  manageCommittees: '/committees',
+  manageGradingScheme: '/gradingScheme',
 
   evaluator: id => `/evaluators/${id}`,
 

@@ -1,9 +1,10 @@
 import Vue from 'vue'
+import VueDragDrop from 'vue-drag-drop'
+import Notifications from 'vue-notification'
+import AsyncComputed from 'vue-async-computed'
 import Vuetify, { VChip } from 'vuetify/lib'
 import Vuebar from 'vuebar'
 import '@fortawesome/fontawesome-free/css/all.min.css'
-
-Vue.use(Vuebar)
 
 Vue.use(Vuetify, {
   components: {
@@ -22,3 +23,8 @@ Vue.use(Vuetify, {
     iconfont: 'fa'
   }
 })
+
+Vue.use(AsyncComputed)
+Vue.use(Notifications)
+Vue.use(VueDragDrop)
+Vue.use(Vuebar)

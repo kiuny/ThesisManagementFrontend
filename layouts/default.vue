@@ -4,7 +4,7 @@
 
     <v-navigation-drawer :value="drawerOpen" app clipped fixed @input="toggleDrawer">
       <v-list>
-        <v-list-tile v-for="(item, i) in menuEntries" :key="i" :to="item.to" router exact>
+        <v-list-tile v-for="item in menuEntries" :key="item.to" :to="item.to" router>
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
@@ -20,9 +20,22 @@
         <v-toolbar-side-icon @click="toggleDrawer">
           <v-icon>fa-bars</v-icon>
         </v-toolbar-side-icon>
-        <nuxt-link to="/" class="dashboard-link text--primary"> Thesis manager</nuxt-link>
+        <nuxt-link to="/" class="dashboard-link text--primary">Clever thesis</nuxt-link>
       </v-toolbar-title>
       <v-spacer />
+      <v-flex v-if="!!user.id" shrink>
+        <v-select
+          :value="session"
+          class="pt-4"
+          no-data-text="No session started"
+          label="Current session"
+          :items="sessions"
+          menu-props="bottom, offset-y"
+          item-text="presentation_name"
+          item-value="name"
+          @input="updateSession"
+        ></v-select>
+      </v-flex>
       <v-btn icon @click="toggleDarkMode">
         <v-icon>fa-moon</v-icon>
       </v-btn>
@@ -43,10 +56,23 @@ import { mapMutations, mapState } from 'vuex'
 
 export default {
   computed: {
-    ...mapState('layout', ['menuEntries', 'darkMode', 'drawerOpen'])
+    ...mapState('layout', ['menuEntries', 'darkMode', 'drawerOpen']),
+    ...mapState('auth', ['user']),
+    ...mapState('currentSession', ['session'])
   },
   methods: {
-    ...mapMutations('layout', ['toggleDarkMode', 'toggleDrawer'])
+    ...mapMutations('layout', ['toggleDarkMode', 'toggleDrawer']),
+    ...mapMutations('currentSession', ['updateSession'])
+  },
+  asyncComputed: {
+    sessions: {
+      get() {
+        return this.$axios.$get(this.$endpoint.sessions.list)
+      },
+      shouldUpdate() {
+        return !!this.user.id
+      }
+    }
   }
 }
 </script>
