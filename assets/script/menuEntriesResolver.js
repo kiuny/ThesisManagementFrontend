@@ -5,42 +5,48 @@ const menuEntries = {
     {
       title: 'Exam sessions',
       icon: 'fa-graduation-cap',
-      to: paths.examSessions
+      to: paths.examSessions,
+      description: 'Manage the exam sessions that the users can interact with'
     }
   ],
   'Manage professors': [
     {
       title: 'Professors',
       icon: 'fa-chalkboard-teacher',
-      to: paths.professors
+      to: paths.professors,
+      description: 'Add new professors to the application. Or delete their accounts'
     }
   ],
   'Manage students': [
     {
       title: 'Students',
       icon: 'fa-user-graduate',
-      to: paths.students
+      to: paths.students,
+      description: 'See all your supervised students'
     }
   ],
   'Manage thesis papers': [
     {
       title: 'Your thesis paper',
       icon: 'fa-archive',
-      to: paths.paper
+      to: paths.paper,
+      description: 'Upload paper revisions and talk with your supervisor'
     }
   ],
   'See evaluators': [
     {
       title: 'Evaluators',
       icon: 'fa-chalkboard-teacher',
-      to: paths.evaluators
+      to: paths.evaluators,
+      description: 'See who is going to be in your committee'
     }
   ],
   'Manage keywords': [
     {
       title: 'Domains of interest',
       icon: 'fa-highlighter',
-      to: paths.domainsOfInterest
+      to: paths.domainsOfInterest,
+      description: 'What are you interested in?'
     }
   ],
 
@@ -48,7 +54,8 @@ const menuEntries = {
     {
       title: 'Committees',
       icon: 'fa-angry',
-      to: paths.manageCommittees
+      to: paths.manageCommittees,
+      description: 'Manage everything related to the committees for this exam session'
     }
   ],
 
@@ -56,7 +63,8 @@ const menuEntries = {
     {
       title: 'Grading scheme',
       icon: 'fa-angry',
-      to: paths.manageGradingScheme
+      to: paths.manageGradingScheme,
+      description: 'Set the grading criteria for this exam session'
     }
   ],
 
@@ -64,7 +72,8 @@ const menuEntries = {
     {
       title: 'Presentation day',
       icon: 'fa-tv',
-      to: paths.liveGrading
+      to: paths.liveGrading,
+      description: 'Here you can grade the students during their presentations'
     }
   ]
 }

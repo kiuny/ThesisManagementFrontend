@@ -176,7 +176,8 @@ export default {
       this.saveCommittee(committee)
     },
     removeMember(committee, professor) {
-      committee.members = filter(committee.members, member => member !== professor.id)
+      console.log(committee, professor)
+      committee.members = filter(committee.members, member => member.id !== professor.id)
       this.saveCommittee(committee)
     },
     deleteCommittee(committee) {

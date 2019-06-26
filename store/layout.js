@@ -17,12 +17,14 @@ export const mutations = {
       {
         title: 'Login',
         icon: 'fa-sign-in-alt',
-        to: paths.login
+        to: paths.login,
+        description: 'Login into the application'
       },
       {
         title: 'Register',
         icon: 'fa-user-plus',
-        to: paths.register
+        to: paths.register,
+        description: "If you've been added to the application you can register with your email here"
       }
     ]
   },

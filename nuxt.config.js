@@ -41,7 +41,7 @@ export default {
     '@/plugins/axios',
     '@/plugins/endpointResolver',
     '@/plugins/initializeAuth',
-    '@/plugins/VueExtensions'
+    '@/plugins/VueExtensions.client'
   ],
 
   /*
