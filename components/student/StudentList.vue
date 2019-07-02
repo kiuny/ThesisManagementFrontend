@@ -1,14 +1,15 @@
 <template>
   <v-card class="px-3 py-2">
-    <v-text-field
+    <v-text-field-error
       v-model="email"
+      error="email"
       color="primary"
       label="Add new student by email"
       single-line
       append-outer-icon="fa-plus"
       @click:append-outer="addStudent"
     >
-    </v-text-field>
+    </v-text-field-error>
 
     <v-text-field v-model="filter" color="secondary" label="Search" single-line append-outer-icon="fa-search" clearable>
     </v-text-field>

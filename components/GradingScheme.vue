@@ -6,8 +6,13 @@
         <v-card-title class="headline"> {{ categoryModel.id ? 'Update' : 'Add' }}grading category</v-card-title>
         <v-card-text>
           <v-form>
-            <v-text-field v-model="categoryModel.name" label="Name"></v-text-field>
-            <v-text-field v-model="categoryModel.points" label="Points" type="number"></v-text-field>
+            <v-text-field-error v-model="categoryModel.name" error="name" label="Name"></v-text-field-error>
+            <v-text-field-error
+              v-model="categoryModel.points"
+              error=""
+              label="Points"
+              type="number"
+            ></v-text-field-error>
             <v-textarea v-model="categoryModel.description" label="Description"></v-textarea>
           </v-form>
         </v-card-text>

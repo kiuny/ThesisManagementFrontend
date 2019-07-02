@@ -3,9 +3,9 @@
     <v-layout row justify-center>
       <v-flex xs12 sm8 md6 lg4>
         <v-form>
-          <v-text-field v-model="name" label="Name"></v-text-field>
-          <v-text-field v-model="email" label="Email"></v-text-field>
-          <v-text-field v-model="password" type="password" label="Password"></v-text-field>
+          <v-text-field-error v-model="name" error="name" label="Name"></v-text-field-error>
+          <v-text-field-error v-model="email" error="email" label="Email"></v-text-field-error>
+          <v-text-field-error v-model="password" error="password" type="password" label="Password"></v-text-field-error>
 
           <v-btn color="primary" block @click="register">
             Register

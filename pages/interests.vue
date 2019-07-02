@@ -7,15 +7,16 @@
             <span>Manage your domains of interest</span>
             <v-menu allow-overflow transition="transition slide-y" bottom offset-y>
               <template v-slot:activator="{ on }">
-                <v-text-field
+                <v-text-field-error
                   v-model="interestModel"
+                  error="name"
                   single-line
                   label="Add domain of interest"
                   append-icon="fa-search-plus"
                   v-on="on"
                   @keypress.enter="addDomain(interestModel)"
                 >
-                </v-text-field>
+                </v-text-field-error>
               </template>
               <v-list v-if="items && items.length">
                 <v-list-tile v-for="item in items" :key="item" @click="addDomain(item)">

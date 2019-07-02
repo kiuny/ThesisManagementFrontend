@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 
 export default {
   props: {
@@ -22,6 +22,12 @@ export default {
       const { error, ...attrs } = this.$attrs
       return attrs
     }
+  },
+  beforeDestroy() {
+    this.clearError(this.error)
+  },
+  methods: {
+    ...mapMutations('errors', ['clearError'])
   }
 }
 </script>

@@ -4,6 +4,9 @@ export const state = () => ({
 })
 
 export const mutations = {
+  clearError(state, error) {
+    state.fieldErrors[error] = []
+  },
   processResponse422(state, { data }) {
     console.error(JSON.stringify(data))
     state.alertMessage = data.message

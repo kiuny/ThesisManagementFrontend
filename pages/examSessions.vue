@@ -12,8 +12,12 @@
                 <v-form @submit.prevent="addExamSession">
                   <v-card-title>Add new exam session</v-card-title>
                   <v-card-text>
-                    <v-text-field v-model="name" label="Name"></v-text-field>
-                    <v-text-field v-model="department" label="Department(specializare)"></v-text-field>
+                    <v-text-field-error v-model="name" error="name" label="Name"></v-text-field-error>
+                    <v-text-field-error
+                      v-model="department"
+                      error="department"
+                      label="Department(specializare)"
+                    ></v-text-field-error>
                   </v-card-text>
                   <v-card-actions>
                     <v-btn flat color="success" type="submit">Save</v-btn>

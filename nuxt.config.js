@@ -5,7 +5,7 @@ export default {
   mode: 'spa',
 
   /*
-   ** Headers of the paPge
+   ** Headers of the page
    */
   head: {
     title: 'Thesis manager',

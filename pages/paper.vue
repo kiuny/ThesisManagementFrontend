@@ -10,8 +10,12 @@
               </v-card-title>
               <v-card-text>
                 <v-form v-if="editing" @submit.prevent="updatePaper">
-                  <v-text-field v-model="paper.name" label="Name your project"></v-text-field>
-                  <v-text-field v-model="paper.link" label="Link to your project"></v-text-field>
+                  <v-text-field-error v-model="paper.name" error="name" label="Name your project"></v-text-field-error>
+                  <v-text-field-error
+                    v-model="paper.link"
+                    error="link"
+                    label="Link to your project"
+                  ></v-text-field-error>
 
                   <v-btn type="submit" block color="primary">Update</v-btn>
                   <v-btn v-if="editing" block color="info" @click="cancelEdit">Cancel</v-btn>
@@ -38,7 +42,11 @@
               </v-card-title>
               <v-card-text>
                 <v-form @submit.prevent="uploadRevision">
-                  <v-text-field v-model="uploadForm.name" label="Name your revision"></v-text-field>
+                  <v-text-field-error
+                    v-model="uploadForm.name"
+                    error="name"
+                    label="Name your revision"
+                  ></v-text-field-error>
                   <UploadButton v-model="uploadForm.paperFile" color="accent" block></UploadButton>
                   <v-btn type="submit" block color="primary">Upload</v-btn>
                 </v-form>
