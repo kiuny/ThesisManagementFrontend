@@ -20,7 +20,6 @@ export default function({ $axios, app }) {
   })
   $axios.onResponseError(({ response }) => {
     if (response.config.url.startsWith('/')) extractAuthToken(response.headers)
-    console.error(response.data)
-    return true
+    app.store.commit(`errors/processResponse${response.status}`, response)
   })
 }

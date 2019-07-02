@@ -5,6 +5,7 @@ import AsyncComputed from 'vue-async-computed'
 import Vuetify, { VChip } from 'vuetify/lib'
 import Vuebar from 'vuebar'
 import '@fortawesome/fontawesome-free/css/all.min.css'
+import TextFieldWithError from '../components/TextFieldWithError'
 
 Vue.use(Vuetify, {
   components: {
@@ -28,3 +29,5 @@ Vue.use(AsyncComputed)
 Vue.use(Notifications)
 Vue.use(VueDragDrop)
 Vue.use(Vuebar)
+
+Vue.component('v-text-field-error', TextFieldWithError)

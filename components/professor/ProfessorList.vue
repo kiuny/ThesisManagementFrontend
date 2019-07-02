@@ -1,16 +1,16 @@
 <template>
   <v-card class="px-3 py-2">
-    <v-text-field
-      ref="email"
+    <v-text-field-error
       v-model="email"
       color="primary"
       label="Add new professor by email"
       single-line
+      error="email"
       append-outer-icon="fa-plus"
       @keypress.enter="addProfessor"
       @click:append-outer="addProfessor"
     >
-    </v-text-field>
+    </v-text-field-error>
 
     <v-text-field v-model="filter" color="secondary" label="Search" single-line append-outer-icon="fa-search" clearable>
     </v-text-field>
@@ -62,12 +62,13 @@ export default {
     goToProfessor(id) {
       return paths.professor(id)
     },
-    addProfessor() {
-      this.$axios
-        .$post(this.$endpoint.professors.create, {
+    async addProfessor() {
+      try {
+        await this.$axios.$post(this.$endpoint.professors.create, {
           email: this.email
         })
-        .then(() => (this.email = ''))
+        this.email = ''
+      } catch (e) {}
     }
   }
 }
